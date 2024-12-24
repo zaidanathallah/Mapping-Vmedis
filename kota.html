@@ -1,0 +1,1034 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapping Kota</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="kota-mapping-content" class="collapsed" style="display: none">
+      <div class="main-content-kota" id="main-content-kota">
+        <div id="kotaMappingContentContainer">
+          <div class="header-container" id="header-kota">
+            <!-- Heading -->
+            <h2 id="main-title-kota" class="hidden">Mapping Kota</h2>
+
+            <div class="container">
+              <div class="content-header">
+                <button id="cari-kota" class="btn-custom btn-search">
+                  <i class="fas fa-search"></i> Search
+                </button>
+
+                <button id="refresh-kota" class="btn-custom btn-refresh">
+                  <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+
+                <button id="matching-kota" class="btn-custom btn-matching">
+                  <i class="fas fa-link"></i> Matching
+                </button>
+
+                <div style="display: inline-flex; align-items: center">
+                  <label for="sinkronMappingkota" style="margin-right: 8px"
+                    >Sinkron Mapping</label
+                  >
+                  <select
+                    id="sinkronMappingkota"
+                    class="form-control"
+                    style="width: auto"
+                  >
+                    <option value="belum">Belum</option>
+                    <option value="sudah">Sudah</option>
+                    <option value="semua">Semua</option>
+                  </select>
+                </div>
+
+                <div
+                  class="sorting-options"
+                  style="display: inline-flex; align-items: center"
+                >
+                  <label for="sortBy" style="margin-right: 8px">Urutkan</label>
+                  <select id="sortBy" class="form-control" style="width: auto">
+                    <option value="provinsi_kota_asc">
+                      Provinsi dan Kota (A-Z)
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <table id="data-obat-kota">
+                <thead>
+                  <tr>
+                    <th class="checkbox-column-kota">
+                      <button class="btn btn-select" id="select-30-btn-kota">
+                        <i class="fas fa-check-square"></i> 30
+                      </button>
+                      <button
+                        class="btn btn-delete"
+                        id="delete-selected-btn-kota"
+                      >
+                        <i class="fas fa-square"></i>
+                      </button>
+                    </th>
+                    <th style="font-size: 13px; text-align: left">Provinsi</th>
+                    <th style="font-size: 13px; text-align: left">
+                      Provinsi Aktif
+                    </th>
+                    <th style="font-size: 13px; text-align: left">
+                      ID Provinsi Satu Sehat
+                    </th>
+                    <th style="font-size: 13px; text-align: left">ID Kota</th>
+                    <th style="font-size: 13px; text-align: left">Kota</th>
+                    <th style="font-size: 13px; text-align: left">
+                      Kota Aktif
+                    </th>
+                    <th style="font-size: 13px; text-align: left">
+                      ID Kota Satu Sehat
+                    </th>
+                  </tr>
+                  <tr>
+                    <th></th>
+
+                    <th>
+                      <input
+                        id="search-provinsi"
+                        placeholder="Cari provinsi"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                    <th>
+                      <select
+                        id="search-provinsiaktif"
+                        style="text-align: left"
+                      >
+                        <option value="">Semua</option>
+                        <!-- Tambahkan opsi untuk menampilkan semua data -->
+                        <option value="0">Non Aktif</option>
+                        <option value="1">Aktif</option>
+                      </select>
+                    </th>
+                    <th>
+                      <input
+                        id="search-idprovinsi_satusehat"
+                        placeholder="Cari ID provinsi Satu Sehat"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+
+                    <th>
+                      <input
+                        id="search-idkota"
+                        placeholder="Cari ID Kota"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+
+                    <th>
+                      <input
+                        id="search-kota"
+                        placeholder="Cari kota"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                    <th>
+                      <select id="search-kotaaktif" style="text-align: left">
+                        <option value="">Semua</option>
+                        <!-- Tambahkan opsi untuk menampilkan semua data -->
+                        <option value="0">Non Aktif</option>
+                        <option value="1">Aktif</option>
+                      </select>
+                    </th>
+                    <th>
+                      <input
+                        id="search-idkota_satusehat"
+                        placeholder="Cari ID kota Satu Sehat"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                  </tr>
+                </thead>
+
+                <div
+                  id="pagination-info-kota"
+                  style="margin-top: 10px; font-size: 14px"
+                ></div>
+
+                <tbody id="obat-list-kota"></tbody>
+              </table>
+
+              <div id="pagination-controls-kota"></div>
+
+              <div id="sync-results-kota" style="margin-top: 20px"></div>
+
+              <!-- Modal Konfirmasi Matching -->
+              <div id="confirmationModalkota" class="modal">
+                <div class="modal-content">
+                  <p>Apakah anda yakin akan memproses data yang terpilih?</p>
+                  <button
+                    id="confirmProcesskota"
+                    class="btn-custom btn-confirm"
+                  >
+                    Proses
+                  </button>
+                  <button id="cancelProcesskota" class="btn-custom btn-cancel">
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Modal Dialog for refresh confirmation -->
+              <div id="confirmRefreshModalkota" class="modal">
+                <div class="modal-content">
+                  <div class="modal-header">Konfirmasi Refresh Data</div>
+                  <p>Apakah anda yakin akan melakukan refresh data?</p>
+                  <button id="prosesRefreshkota">Proses</button>
+                  <button onclick="closeModal('confirmRefreshModalkota')">
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Modal Loading -->
+              <div id="loadingModalkota" class="modal">
+                <div class="modal-content">
+                  <p>Memproses, mohon tunggu...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="selectModalkota" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Konfirmasi Pilihan</div>
+        <p>
+          Memilih semua data akan mereset data terpilih sebelumnya, apakah anda
+          yakin untuk melanjutkan?
+        </p>
+        <button onclick="confirmSelect()">Proses</button>
+        <button onclick="closeModal('selectModalkota')">Batal</button>
+      </div>
+    </div>
+
+    <!-- Modal Dialog for deleting selected data -->
+    <div id="deleteModalkota" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Konfirmasi Hapus</div>
+        <p>Apakah anda yakin menghapus semua data yang terpilih?</p>
+        <button onclick="confirmDelete()">Proses</button>
+        <button onclick="closeModal('deleteModalkota')">Batal</button>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      // Pastikan konten Mapping Provinsi tampil setelah halaman dimuat
+      const kotaMappingContent = document.getElementById(
+        "kota-mapping-content"
+      );
+      if (kotaMappingContent) {
+        kotaMappingContent.style.display = "block"; // Menampilkan form
+      }
+
+      // Pastikan Fungsi Dimuat di Awal
+
+      document.getElementById("select-30-btn-kota").onclick = function () {
+        document.getElementById("selectModalkota").style.display = "block";
+      };
+
+      function confirmSelect() {
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        let selectedCount = 0;
+
+        checkboxes.forEach((checkbox, index) => {
+          console.log(
+            `Checkbox ${index}: Disabled=${checkbox.disabled}, Checked=${checkbox.checked}`
+          ); // Log each checkbox's state
+          if (!checkbox.disabled && selectedCount < 30) {
+            checkbox.checked = true; // Check the box if it's not disabled
+            selectedCount++; // Increase the count for each selected checkbox
+          }
+        });
+
+        console.log("Total selected checkboxes:", selectedCount); // Check how many were selected
+        closeModal("selectModalkota");
+      }
+
+      // Delete selected data with confirmation
+      document.getElementById("delete-selected-btn-kota").onclick =
+        function () {
+          document.getElementById("deleteModalkota").style.display = "block";
+        };
+
+      let currentPage = 1; // Halaman saat ini
+      const itemsPerPage = 30; // Jumlah item per halaman
+      const pagesToShow = 5; // Jumlah angka halaman yang ditampilkan sekaligus
+      let totalPages = 0; // Total halaman yang akan dihitung setelah data dimuat
+      let searchParams = {}; // Simpan pencarian terakhir
+
+      // Fungsi untuk memuat data kota
+      function loadKotaList(searchParams = {}) {
+        console.log("Memuat data dengan parameter pencarian:", searchParams);
+        const tableBody = document.getElementById("obat-list-kota");
+
+        // Tambahkan parameter pencarian ke URL
+        const queryString = new URLSearchParams(searchParams).toString();
+        console.log(`Query string yang dikirim: get_kota.php?${queryString}`);
+
+        fetch(`get_kota.php?${queryString}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data yang diterima:", data);
+
+            // Kosongkan tabel sebelum mengisi
+            tableBody.innerHTML = "";
+
+            const totalData = data.length; // Hitung total data
+
+            // Jika tidak ada data, tampilkan pesan "No results found"
+            if (totalData === 0) {
+              tableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="7" class="text-center">No results found</td>
+                                </tr>`;
+              // Update informasi pagination dan sembunyikan pagination jika tidak ada data
+              updatePaginationInfokota(totalData);
+              document.getElementById("pagination-controls-kota").innerHTML =
+                "";
+              return; // Berhenti di sini jika tidak ada data
+            }
+
+            totalPages = Math.ceil(totalData / itemsPerPage); // Hitung total halaman
+
+            // Tentukan indeks awal dan akhir data untuk halaman saat ini
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            // Ambil data yang sesuai dengan halaman saat ini
+            const pageData = data.slice(startIndex, endIndex);
+
+            // Gabungkan semua baris sebagai string sebelum menambahkan ke tabel
+            let rows = pageData
+              .map((Kota) => {
+                // Ubah nilai kotaaktif menjadi "Aktif" atau "Non Aktif"
+                const kotaAktifText =
+                  Kota.kotaaktif === "1" ? "Aktif" : "Non Aktif";
+
+                // Ubah nilai provinsiaktif menjadi "Aktif" atau "Non Aktif"
+                const provinsiAktifText =
+                  Kota.provinsiaktif === "1" ? "Aktif" : "Non Aktif";
+
+                // Tentukan apakah checkbox harus dinonaktifkan
+                const isDisabled =
+                  Kota.idkota_satusehat?.trim() ||
+                  Kota.provinsiaktif === "0" ||
+                  !Kota.provinsiaktif ||
+                  Kota.kotaaktif === "0" ||
+                  !Kota.kotaaktif
+                    ? "disabled"
+                    : "";
+
+                return `
+                                <tr>
+                                    <td class="checkbox-column-kota">
+                                        <input type="checkbox" class="select-checkbox" ${isDisabled}>
+                                        <button class="delete-icon-kota" onclick="delete_idkota_Satusehat('${Kota.kota}')">🗑️</button>
+                                    </td>
+                                    <td>${Kota.provinsi}</td>
+                                    <td>${provinsiAktifText}</td>
+                                    <td>${Kota.idprovinsi_satusehat}</td>
+                                    <td>${Kota.idkota}</td>
+                                    <td>${Kota.kota}</td>
+                                    <td>${kotaAktifText}</td>
+                                    <td>${Kota.idkota_satusehat}</td>
+                                </tr>`;
+              })
+              .join(""); // Gabungkan semua baris menjadi satu string
+
+            // Tambahkan baris ke tabel sekali saja
+            tableBody.innerHTML = rows;
+
+            // Update kontrol pagination
+            updatePaginationControlskota();
+            // Update informasi pagination
+            updatePaginationInfokota(totalData);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      // Fungsi Global
+      window.delete_idkota_Satusehat = function (kota) {
+        if (confirm("Apakah Anda yakin ingin menghapus ID kota Satu Sehat?")) {
+          fetch(`delete_idkota_Satusehat.php?kota=${kota}`, {
+            method: "GET",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("ID kota Satu Sehat berhasil dihapus");
+                loadKotaList(searchParams); // Muat ulang data setelah penghapusan
+              } else {
+                alert("Gagal menghapus ID kota Satu Sehat");
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      };
+
+      // Fungsi untuk mengupdate kontrol pagination
+      function updatePaginationControlskota() {
+        const paginationContainer = document.getElementById(
+          "pagination-controls-kota"
+        );
+        paginationContainer.innerHTML = ""; // Kosongkan kontrol pagination sebelumnya
+
+        const startPage = Math.max(
+          1,
+          currentPage - Math.floor(pagesToShow / 2)
+        );
+        const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
+        // Tambahkan tombol "Previous"
+        const prevButton = document.createElement("button");
+        prevButton.innerHTML = "&laquo;"; // Karakter panah ke kiri
+        prevButton.classList.add("page-button");
+        prevButton.disabled = currentPage === 1; // Nonaktifkan jika di halaman pertama
+
+        prevButton.addEventListener("click", function () {
+          if (currentPage > 1) {
+            currentPage--; // Kurangi halaman saat ini
+            loadKotaList(searchParams); // Muat data untuk halaman sebelumnya dengan parameter pencarian
+          }
+        });
+
+        paginationContainer.appendChild(prevButton);
+
+        // Buat tombol untuk setiap halaman yang ditampilkan
+        for (let i = startPage; i <= endPage; i++) {
+          const pageButton = document.createElement("button");
+          pageButton.innerText = i;
+          pageButton.classList.add("page-button");
+
+          // Tambahkan class "active" untuk halaman yang sedang aktif
+          if (i === currentPage) {
+            pageButton.classList.add("active"); // Tambahkan class aktif (untuk warna merah)
+          }
+
+          pageButton.addEventListener("click", function () {
+            currentPage = i;
+            loadKotaList(searchParams); // Muat data untuk halaman yang dipilih dengan parameter pencarian
+          });
+
+          paginationContainer.appendChild(pageButton);
+        }
+
+        // Tambahkan tombol "Next"
+        const nextButton = document.createElement("button");
+        nextButton.innerHTML = "&raquo;";
+        nextButton.classList.add("page-button");
+        nextButton.disabled = currentPage === totalPages;
+
+        nextButton.addEventListener("click", function () {
+          if (currentPage < totalPages) {
+            currentPage++;
+            loadKotaList(searchParams); // Muat data untuk halaman berikutnya dengan parameter pencarian
+          }
+        });
+
+        paginationContainer.appendChild(nextButton);
+
+        // Menambahkan total halaman di sebelah kanan panah
+        const totalPagesSpan = document.createElement("span");
+        totalPagesSpan.classList.add("total-pages-info");
+        totalPagesSpan.innerText = `Total ${totalPages} pages`;
+        paginationContainer.appendChild(totalPagesSpan);
+
+        // Menambahkan tulisan "Go to page"
+        const goToPageText = document.createElement("span");
+        goToPageText.classList.add("go-to-page-text");
+        goToPageText.innerText = " Go to page ";
+        paginationContainer.appendChild(goToPageText);
+
+        // Tambahkan input untuk memasukkan nomor halaman dan tombol Go
+        const pageInput = document.createElement("input");
+        pageInput.type = "number";
+        pageInput.id = "page-input";
+        pageInput.min = 1;
+        pageInput.max = totalPages;
+        pageInput.value = currentPage; // Set nilai input ke halaman saat ini
+        pageInput.classList.add("page-input");
+
+        const goButton = document.createElement("button");
+        goButton.innerText = "Go";
+        goButton.classList.add("go-button");
+
+        goButton.addEventListener("click", function () {
+          const pageNumber = parseInt(pageInput.value);
+
+          if (
+            !isNaN(pageNumber) &&
+            pageNumber > 0 &&
+            pageNumber <= totalPages
+          ) {
+            currentPage = pageNumber;
+            loadKotaList(searchParams); // Muat data untuk halaman yang dipilih dengan parameter pencarian
+          } else {
+            alert(
+              `Silakan masukkan angka yang valid antara 1 dan ${totalPages}`
+            );
+          }
+        });
+
+        // Tambahkan input dan tombol Go ke container pagination
+        paginationContainer.appendChild(pageInput);
+        paginationContainer.appendChild(goButton);
+      }
+
+      // Fungsi untuk memperbarui informasi pagination
+      function updatePaginationInfokota(totalData) {
+        const startIndex = (currentPage - 1) * itemsPerPage + 1;
+        const endIndex = Math.min(currentPage * itemsPerPage, totalData);
+
+        const paginationInfo = document.getElementById("pagination-info-kota");
+        paginationInfo.textContent = `Menampilkan ${startIndex} - ${endIndex} data dari total ${totalData} data.`;
+      }
+
+      // Event listener for the search button
+      document
+        .getElementById("cari-kota")
+        .addEventListener("click", function () {
+          currentPage = 1; // Reset to the first page each time a search is performed
+
+          // Get the value of the search inputs and save them to the global searchParams variable
+          searchParams = {
+            provinsi: document.getElementById("search-provinsi").value,
+            ProvinsiAktif: document.getElementById("search-provinsiaktif")
+              .value, // Updated to get the combobox value
+            IDKota: document.getElementById("search-idkota").value,
+            kota: document.getElementById("search-kota").value,
+            KotaAktif: document.getElementById("search-kotaaktif").value, // Updated to get the combobox value
+            IDKotaSatuSehat: document.getElementById("search-idkota_satusehat")
+              .value,
+            idkotaStatus: document.getElementById("sinkronMappingkota").value,
+            sortBy: document.getElementById("sortBy").value, // Ambil nilai sorting
+          };
+
+          loadKotaList(searchParams); // Load data with search parameters
+        });
+
+      // Fungsi untuk menampilkan modal loading
+      function showLoading() {
+        document.getElementById("loadingModalkota").style.display = "block";
+      }
+
+      // Fungsi untuk menyembunyikan modal loading
+      function hideLoading() {
+        document.getElementById("loadingModalkota").style.display = "none";
+      }
+
+      // Event listener untuk tombol Refresh
+      document
+        .getElementById("refresh-kota")
+        .addEventListener("click", function () {
+          document.getElementById("confirmRefreshModalkota").style.display =
+            "block"; // Tampilkan modal konfirmasi
+        });
+
+      // Event listener untuk tombol Proses di dalam modal konfirmasi refresh
+      document
+        .getElementById("prosesRefreshkota")
+        .addEventListener("click", function () {
+          document.getElementById("confirmRefreshModalkota").style.display =
+            "none"; // Sembunyikan modal konfirmasi
+          showLoading(); // Tampilkan loading
+
+          // Proses Refresh
+          setTimeout(() => {
+            console.log("Tombol Refresh diklik dan konfirmasi disetujui");
+            loadKotaList(searchParams); // Muat ulang data tanpa mengubah pencarian
+
+            hideLoading(); // Sembunyikan loading setelah data dimuat
+          }, 1000); // Tambahkan sedikit delay agar transisi loading terlihat
+        });
+
+      // Fungsi untuk reset state dan form setelah mapping selesai
+      function resetMappingFormkota() {
+        // Reset checkbox dan form
+        document.querySelectorAll(".select-checkbox").forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+
+        document
+          .querySelectorAll(".kemenkes-kota-checkbox")
+          .forEach((checkbox) => {
+            checkbox.checked = false;
+          });
+
+        // Kosongkan isi kontainer hasil mapping
+        const container = document.getElementById("sync-results-kota");
+        if (container) {
+          container.innerHTML = ""; // Bersihkan hasil mapping sebelumnya
+        }
+
+        // Kosongkan data obat yang dipilih
+        selectedDataKota = [];
+
+        // Kembalikan tampilan halaman Mapping Obat Vmedis dan sembunyikan verifikasi
+        $("#VerificationkotaContent").hide(); // Menghapus elemen verifikasi sebelumnya
+        $("#header-kota").show(); // Tampilkan kembali header halaman utama
+      }
+
+      // Function to sanitize the medicine name (removes numbers and spaces, and adjusts case)
+      function sanitizeNamekota(name) {
+        return name.replace(/[^a-zA-Z]/g, ""); // Only letters, lower case
+      }
+
+      async function fetchAccuracykota(firstString, secondString) {
+        console.log(
+          `Calculating accuracy between: "${firstString}" and "${secondString}"`
+        ); // Debugging log
+        try {
+          const response = await fetch("calculateAccuracyKota.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ firstString, secondString }),
+          });
+
+          if (!response.ok)
+            throw new Error(`Error fetching accuracy: ${response.status}`);
+          const data = await response.json();
+          return data.accuracy || 0;
+        } catch (error) {
+          console.error("Error fetching accuracy:", error);
+          return 0; // Return 0 on error
+        }
+      }
+
+      // Batch accuracy calculation to reduce requests
+
+      async function calculateAccuraciesBatchkota(selectedKotaName, KotaData) {
+        // Sanitize and standardize the selected province name
+        console.log("Selected Kota Name:", selectedKotaName);
+        const sanitizedSelectedNameKota =
+          sanitizeNamekota(selectedKotaName).toLowerCase();
+
+        // Process the province data in parallel to calculate accuracy
+        const results = await Promise.all(
+          KotaData.map(async (item) => {
+            // Sanitize and standardize the Kemenkes province name
+            const sanitizedItemNameKota = sanitizeNamekota(
+              item.name
+            ).toLowerCase();
+            console.log("Kemenkes Kota Name:", item.name);
+            // Direct match for 100% accuracy
+            let accuracy =
+              sanitizedSelectedNameKota === sanitizedItemNameKota
+                ? 100
+                : await fetchAccuracykota(
+                    sanitizedSelectedNameKota,
+                    sanitizedItemNameKota
+                  );
+
+            return { ...item, accuracy: parseFloat(accuracy) };
+          })
+        );
+
+        // Filter results to only include items with accuracy >= 40%
+        const filteredResults = results.filter((item) => item.accuracy >= 40);
+
+        return filteredResults;
+      }
+
+      // Otherwise, fetch the calculated accuracy from the backend
+
+      // Function to fetch Kemenkes data from the API
+      async function fetchKotaData(parent_code) {
+        console.log("Fetching data for:", parent_code);
+
+        if (!parent_code || parent_code.trim() === "") {
+          console.error("Error: parent tidak diberikan.");
+          return [];
+        }
+
+        try {
+          const response = await fetch("api_kota.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `IDPROVINSISATUSEHAT=${encodeURIComponent(parent_code)}`,
+          });
+
+          if (!response.ok) {
+            console.error(
+              "Error fetching data from Kemenkes:",
+              response.status,
+              response.statusText
+            );
+            throw new Error("Gagal mengambil data dari Kemenkes");
+          }
+
+          const data = await response.json();
+          console.warn("test data format :", data);
+
+          if (data.data && Array.isArray(data.data)) {
+            // Membatasi hanya 10 data yang diambil
+            const limitedData = data.data.slice(0, 10);
+            console.log("Limited Data:", limitedData);
+            return limitedData;
+          } else {
+            console.warn("Unexpected data format:", data);
+            return [];
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          return [];
+        }
+      }
+
+      // Function to process selected provinsi and fetch Kemenkes data
+      async function processSelectedKota(selectedDataKota) {
+        try {
+          const KotaDataPromises = selectedDataKota.map((Kota) =>
+            fetchKotaData(Kota.IDPROVINSISATUSEHAT)
+          );
+          const KotaDataResults = await Promise.all(KotaDataPromises);
+
+          // Display verification content for selected provinces
+          displayVerificationkotaContent(selectedDataKota, KotaDataResults);
+        } catch (error) {
+          console.error(error);
+          alert("Gagal mengambil data dari API Kemenkes");
+        }
+      }
+
+      async function displayVerificationkotaContent(
+        selectedDataKota,
+        KotaDataResults
+      ) {
+        const kotaMappingContentContainer = document.getElementById(
+          "kotaMappingContentContainer"
+        );
+
+        // Ensure the container exists
+        if (!kotaMappingContentContainer) {
+          console.error(
+            "Element with ID 'kotaMappingContentContainer' not found."
+          );
+          return;
+        }
+
+        // Remove previous content if it exists
+        const previousVerificationkotaContent = document.getElementById(
+          "VerificationkotaContent"
+        );
+        if (previousVerificationkotaContent)
+          previousVerificationkotaContent.remove();
+
+        // Process the data for verification
+        const verificationKotaItems = await Promise.all(
+          selectedDataKota.map(async (selectedKota, index) => {
+            // Ensure provinsiDataResults[index] exists
+
+            // Calculate accuracies for the current selected provinsi and Kemenkes data
+            console.log("Selected Kota:", selectedKota.KOTA);
+            const dataWithAccuracy = await calculateAccuraciesBatchkota(
+              selectedKota.KOTA,
+              KotaDataResults[index]
+            );
+            dataWithAccuracy.sort((a, b) => b.accuracy - a.accuracy);
+            console.log("Data with Accuracy:", dataWithAccuracy);
+
+            // Create the list of Kemenkes provinces with accuracy data
+            const kemenkesKotaOptions = dataWithAccuracy
+              .map((kemenkesKota, i) => {
+                // Check if the accuracy is 100% and pre-check the checkbox
+                const isChecked =
+                  kemenkesKota.accuracy === 100 ? "checked" : "";
+                return `
+                                        <li>
+                                            <input type="checkbox" class="kemenkes-kota-checkbox" id="kemenkes-${index}-${i}" value="${
+                  kemenkesKota.name
+                }" 
+                                            data-selected-index="${index}" data-kemenkes-kota='${JSON.stringify(
+                  kemenkesKota
+                )}' ${isChecked} />
+                                            [${kemenkesKota.accuracy}%] - ${
+                  kemenkesKota.name
+                } - ${kemenkesKota.code}
+                                        </li>
+                                    `;
+              })
+              .join(""); // Join the array into a single string
+
+            return `
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                        <div style="width: 45%;">
+                                            <h3>Kota Terpilih</h3>
+                                            <strong>${index + 1}.</strong> ${
+              selectedKota.PROVINSI
+            } - ${selectedKota.KOTA}
+                                        </div>
+                                        <div style="width: 45%;">
+                                            <h3>Data Kota dari Kemenkes</h3>
+                                            ► ${selectedKota.KOTA}
+                                            <ul>${kemenkesKotaOptions}</ul>
+                                        </div>
+                                    </div>
+                                    <hr style="border: 1px solid #ddd; margin: 10px 0;">
+                                `;
+          })
+        );
+
+        const VerificationkotaContent = `
+                                <div id="VerificationkotaContent" style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                    <h2 style="text-align: center;">Verifikasi Mapping Kota</h2>
+                                    ${verificationKotaItems.join("")}
+                                    <button id="confirmMappingKota" class="btn-confirm">Konfirmasi Mapping</button>
+                                    <button id="cancelMappingKota" class="btn-cancel">Batal</button>
+                                </div>
+                            `;
+
+        // Use verificationContent here
+        $("#kotaMappingContentContainer").append(VerificationkotaContent);
+        $("#header-kota").hide();
+
+        $(document)
+          .off("click", "#confirmMappingKota")
+          .on("click", "#confirmMappingKota", async function (event) {
+            event.preventDefault();
+            const mappedKota = [];
+
+            selectedDataKota.forEach((selectedKota, index) => {
+              const selectedCheckbox = document.querySelector(
+                `.kemenkes-kota-checkbox[data-selected-index="${index}"]:checked`
+              );
+              if (selectedCheckbox) {
+                const kemenkesKota = JSON.parse(
+                  selectedCheckbox.getAttribute("data-kemenkes-kota")
+                );
+                mappedKota.push({
+                  selected_kota: {
+                    IDKOTA: selectedKota.IDKOTA, // Pastikan IDKOTA diambil dengan benar
+                  },
+                  mapped_kemenkes_kota: {
+                    IDKOTASATUSEHAT: kemenkesKota.code, // Pastikan kode diambil dari data Kemenkes
+                  },
+                });
+              }
+            });
+
+            // Debugging: Log the mappedKota array
+            console.log("Mapped Kota Array:", mappedKota);
+
+            if (mappedKota.length > 0) {
+              try {
+                await updateVmedisDatakota(mappedKota);
+
+                $("#VerificationkotaContent").hide();
+                $("#header-kota").show();
+
+                // Reload table with updated data
+                // (Tambahkan fungsi load data di sini jika diperlukan)
+              } catch (error) {
+                console.error(error);
+                alert("Terjadi kesalahan saat mengupdate data ke Vmedis.");
+              }
+            } else {
+              alert("Pilih setidaknya satu kota untuk dimapping.");
+            }
+          });
+
+        $(document)
+          .off("click", "#cancelMappingKota")
+          .on("click", "#cancelMappingKota", function () {
+            $("#VerificationkotaContent").hide();
+            $("#header-kota").show();
+          });
+      }
+
+      async function updateVmedisDatakota(mappedKota) {
+        try {
+          const response = await fetch("update_kota.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              mapped_kota: mappedKota,
+            }),
+          });
+
+          if (!response.ok) {
+            console.error(
+              "Failed to update Vmedis data:",
+              response.status,
+              response.statusText
+            );
+            throw new Error("HTTP error: " + response.status);
+          }
+
+          const result = await response.json();
+          console.log("Server Response:", result);
+
+          if (result.success) {
+            resetMappingFormkota();
+            loadKotaList(searchParams); // Reload table with updated data
+            alert("Data berhasil diupdate ke Vmedis!");
+          } else {
+            alert("Gagal mengupdate data ke Vmedis.");
+          }
+        } catch (error) {
+          console.error("Error during update:", error);
+          alert("Terjadi kesalahan saat mengupdate data ke Vmedis.");
+        }
+      }
+
+      // Event handlers and existing logic
+      const matchingButtonKota = document.getElementById("matching-kota");
+      const confirmationModalKota = document.getElementById(
+        "confirmationModalkota"
+      );
+      const confirmProcessButtonkota =
+        document.getElementById("confirmProcesskota");
+      const cancelProcessButtonkota =
+        document.getElementById("cancelProcesskota");
+      const kotamappingContentContainer = document.getElementById(
+        "kotaMappingContentContainer"
+      );
+
+      matchingButtonKota.onclick = function () {
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        let anyChecked = Array.from(checkboxes).some(
+          (checkbox) => checkbox.checked
+        );
+
+        if (anyChecked) {
+          confirmationModalKota.style.display = "block";
+        } else {
+          alert("Silakan pilih obat terlebih dahulu.");
+        }
+      };
+
+      confirmProcessButtonkota.onclick = async function () {
+        // Tampilkan modal loading setelah tombol "Proses" diklik
+        const loadingModal = document.getElementById("loadingModalkota");
+        loadingModal.style.display = "block";
+
+        try {
+          const selectedDataKota = [];
+          const checkboxes = document.querySelectorAll(".select-checkbox");
+
+          // Pilih data dari checkbox yang dicentang
+          checkboxes.forEach((checkbox, index) => {
+            if (checkbox.checked) {
+              const row = checkbox.closest("tr"); // Pastikan seleksi baris benar
+              const cells = row.cells;
+              const Provinsi = cells[1].textContent.trim();
+              const ProvinsiAktif = cells[2].textContent.trim();
+              const IDProvinsiSatuSehat = cells[3].textContent.trim();
+              const IDKota = cells[4].textContent.trim();
+              const Kota = cells[5].textContent.trim();
+              const KotaAktif = cells[6].textContent.trim();
+              const IDKotaSatuSehat = cells[7].textContent.trim();
+
+              if (IDKota) {
+                selectedDataKota.push({
+                  PROVINSI: Provinsi,
+                  PROVINSIAKTIF: ProvinsiAktif,
+                  IDPROVINSISATUSEHAT: IDProvinsiSatuSehat,
+                  IDKOTA: IDKota,
+                  KOTA: Kota,
+                  KOTAaktif: KotaAktif,
+                  IDKOTASATUSEHAT: IDKotaSatuSehat,
+                });
+              }
+            }
+          });
+
+          // Validasi apakah ada data yang dipilih
+          if (selectedDataKota.length > 0) {
+            confirmationModalKota.style.display = "none"; // Tutup modal konfirmasi
+
+            // Ambil obat yang dicentang dari hasil mapping Kemenkes
+            const mappedKota = [];
+
+            document
+              .querySelectorAll(".kemenkes-kota-checkbox:checked")
+              .forEach((checkbox) => {
+                const kemenkesKota = JSON.parse(
+                  checkbox.getAttribute("data-kemenkes-kota")
+                ); // Ambil data kemenkesProv dari atribut data-kemenkes-prov
+                if (kemenkesKota) {
+                  mappedKota.push({
+                    IDKOTA: kemenkesKota.IDKOTA || null, // Pastikan IDKOTA benar
+                    KOTA: checkbox.value.trim(), // Nama kota dari checkbox
+                    IDKOTASATUSEHAT: kemenkesKota.code,
+                    IDPROVINSISATUSEHAT: kemenkesKota.parent_code,
+                  });
+                }
+              });
+
+            console.log("Data Kota Terpilih:", selectedDataKota);
+            console.log("Mapping Kota Kemenkes:", mappedKota);
+
+            // Proses data yang dipilih dan hasil mapping
+            await processSelectedKota(selectedDataKota, mappedKota);
+          } else {
+            alert("Pilih Kota terlebih dahulu untuk diproses.");
+          }
+        } catch (error) {
+          console.error("Error saat memproses data:", error);
+          alert("Terjadi kesalahan saat memproses data.");
+        } finally {
+          // Sembunyikan modal loading setelah selesai
+          loadingModal.style.display = "none";
+        }
+      };
+
+      cancelProcessButtonkota.onclick = function () {
+        confirmationModalKota.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == confirmationModalKota) {
+          confirmationModalKota.style.display = "none";
+        }
+      };
+
+      function confirmDelete() {
+        // Select all checkboxes with the class 'select-checkbox'
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        // Iterate through each checkbox and uncheck it
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+        // Close the modal after unchecking
+        closeModal("deleteModalkota");
+      }
+
+      // Function to close the modal
+      function closeModal(modalId) {
+        console.log("Modal ID:", modalId); // Debugging log
+        const modalElement = document.getElementById(modalId);
+        if (modalElement) {
+          modalElement.style.display = "none";
+        } else {
+          console.error(`Modal with ID "${modalId}" not found.`);
+        }
+      }
+    </script>
+  </body>
+</html>

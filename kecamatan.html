@@ -1,0 +1,1125 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapping kecamatan</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="kecamatan-mapping-content" class="collapsed" style="display: none">
+      <div class="main-content-kecamatan" id="main-content-kecamatan">
+        <div id="kecamatanMappingContentContainer">
+          <div class="header-container" id="header-kecamatan">
+            <!-- Heading -->
+            <h2 id="main-title-kecamatan" class="hidden">Mapping Kecamatan</h2>
+
+            <div class="container">
+              <div class="content-header">
+                <button id="cari-kecamatan" class="btn-custom btn-search">
+                  <i class="fas fa-search"></i> Search
+                </button>
+
+                <button id="refresh-kecamatan" class="btn-custom btn-refresh">
+                  <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+
+                <button id="matching-kecamatan" class="btn-custom btn-matching">
+                  <i class="fas fa-link"></i> Matching
+                </button>
+
+                <div style="display: inline-flex; align-items: center">
+                  <label for="sinkronMappingkecamatan" style="margin-right: 8px"
+                    >Sinkron Mapping</label
+                  >
+                  <select
+                    id="sinkronMappingkecamatan"
+                    class="form-control"
+                    style="width: auto"
+                  >
+                    <option value="belum">Belum</option>
+                    <option value="sudah">Sudah</option>
+                    <option value="semua">Semua</option>
+                  </select>
+                </div>
+
+                <div
+                  class="sorting-options"
+                  style="display: inline-flex; align-items: center"
+                >
+                  <label for="sortBy" style="margin-right: 8px">Urutkan</label>
+                  <select id="sortBy" class="form-control" style="width: auto">
+                    <option value="provinsi_kota_kecamatan_asc">
+                      Provinsi, Kota, dan Kecamatan (A-Z)
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <table id="data-obat-kecamatan">
+                <thead>
+                  <tr>
+                    <th class="checkbox-column-kecamatan">
+                      <button
+                        class="btn btn-select"
+                        id="select-30-btn-kecamatan"
+                      >
+                        <i class="fas fa-check-square"></i> 30
+                      </button>
+                      <button
+                        class="btn btn-delete"
+                        id="delete-selected-btn-kecamatan"
+                      >
+                        <i class="fas fa-square"></i>
+                      </button>
+                    </th>
+                    <th style="font-size: 13px; text-align: left">Provinsi</th>
+                    <th style="font-size: 13px; text-align: left">
+                      Provinsi Aktif
+                    </th>
+                    <th style="font-size: 13px; text-align: left">
+                      ID Provinsi Satu Sehat
+                    </th>
+                    <th style="font-size: 13px; text-align: left">Kota</th>
+                    <th style="font-size: 13px; text-align: left">
+                      Kota Aktif
+                    </th>
+                    <th style="font-size: 13px; text-align: left">
+                      ID Kota Satu Sehat
+                    </th>
+                    <th style="font-size: 13px; text-align: left">
+                      ID Kecamatan
+                    </th>
+                    <th style="font-size: 13px; text-align: left">Kecamatan</th>
+                    <th style="font-size: 13px; text-align: left">
+                      Kecamatan Aktif
+                    </th>
+                    <th style="font-size: 13px; text-align: left">
+                      ID Kecamatan Satu Sehat
+                    </th>
+                  </tr>
+                  <tr>
+                    <th></th>
+
+                    <th>
+                      <input
+                        id="search-provinsi"
+                        placeholder="Cari provinsi"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                    <th>
+                      <select
+                        id="search-provinsiaktif"
+                        style="text-align: left"
+                      >
+                        <option value="">Semua</option>
+                        <!-- Tambahkan opsi untuk menampilkan semua data -->
+                        <option value="0">Non Aktif</option>
+                        <option value="1">Aktif</option>
+                      </select>
+                    </th>
+                    <th>
+                      <input
+                        id="search-idprovinsi_satusehat"
+                        placeholder="Cari ID provinsi Satu Sehat"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+
+                    <th>
+                      <input
+                        id="search-kota"
+                        placeholder="Cari kota"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                    <th>
+                      <select id="search-kotaaktif" style="text-align: left">
+                        <option value="">Semua</option>
+                        <!-- Tambahkan opsi untuk menampilkan semua data -->
+                        <option value="0">Non Aktif</option>
+                        <option value="1">Aktif</option>
+                      </select>
+                    </th>
+                    <th>
+                      <input
+                        id="search-idkota_satusehat"
+                        placeholder="Cari ID kota Satu Sehat"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+
+                    <th>
+                      <input
+                        id="search-idkecamatan"
+                        placeholder="Cari ID Kecamatan"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+
+                    <th>
+                      <input
+                        id="search-kecamatan"
+                        placeholder="Cari kecamatan"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                    <th>
+                      <select
+                        id="search-kecamatanaktif"
+                        style="text-align: left"
+                      >
+                        <option value="">Semua</option>
+                        <!-- Tambahkan opsi untuk menampilkan semua data -->
+                        <option value="0">Non Aktif</option>
+                        <option value="1">Aktif</option>
+                      </select>
+                    </th>
+                    <th>
+                      <input
+                        id="search-idkecamatan_satusehat"
+                        placeholder="Cari ID kecamatan Satu Sehat"
+                        type="text"
+                        style="text-align: left"
+                      />
+                    </th>
+                  </tr>
+                </thead>
+
+                <div
+                  id="pagination-info-kecamatan"
+                  style="margin-top: 10px; font-size: 14px"
+                ></div>
+
+                <tbody id="obat-list-kecamatan"></tbody>
+              </table>
+
+              <div id="pagination-controls-kecamatan"></div>
+
+              <div id="sync-results-kecamatan" style="margin-top: 20px"></div>
+
+              <!-- Modal Konfirmasi Matching -->
+              <div id="confirmationModalkecamatan" class="modal">
+                <div class="modal-content">
+                  <p>Apakah anda yakin akan memproses data yang terpilih?</p>
+                  <button
+                    id="confirmProcesskecamatan"
+                    class="btn-custom btn-confirm"
+                  >
+                    Proses
+                  </button>
+                  <button
+                    id="cancelProcesskecamatan"
+                    class="btn-custom btn-cancel"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Modal Dialog for refresh confirmation -->
+              <div id="confirmRefreshModalkecamatan" class="modal">
+                <div class="modal-content">
+                  <div class="modal-header">Konfirmasi Refresh Data</div>
+                  <p>Apakah anda yakin akan melakukan refresh data?</p>
+                  <button id="prosesRefreshkecamatan">Proses</button>
+                  <button onclick="closeModal('confirmRefreshModalkecamatan')">
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Modal Loading -->
+              <div id="loadingModalkecamatan" class="modal">
+                <div class="modal-content">
+                  <p>Memproses, mohon tunggu...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="selectModalkecamatan" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Konfirmasi Pilihan</div>
+        <p>
+          Memilih semua data akan mereset data terpilih sebelumnya, apakah anda
+          yakin untuk melanjutkan?
+        </p>
+        <button onclick="confirmSelect()">Proses</button>
+        <button onclick="closeModal('selectModalkecamatan')">Batal</button>
+      </div>
+    </div>
+
+    <!-- Modal Dialog for deleting selected data -->
+    <div id="deleteModalkecamatan" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Konfirmasi Hapus</div>
+        <p>Apakah anda yakin menghapus semua data yang terpilih?</p>
+        <button onclick="confirmDelete()">Proses</button>
+        <button onclick="closeModal('deleteModalkecamatan')">Batal</button>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      // Pastikan konten Mapping Provinsi tampil setelah halaman dimuat
+      const kecamatanMappingContent = document.getElementById(
+        "kecamatan-mapping-content"
+      );
+      if (kecamatanMappingContent) {
+        kecamatanMappingContent.style.display = "block"; // Menampilkan form
+      }
+
+      // Pastikan Fungsi Dimuat di Awal
+
+      document.getElementById("select-30-btn-kecamatan").onclick = function () {
+        document.getElementById("selectModalkecamatan").style.display = "block";
+      };
+
+      function confirmSelect() {
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        let selectedCount = 0;
+
+        checkboxes.forEach((checkbox, index) => {
+          console.log(
+            `Checkbox ${index}: Disabled=${checkbox.disabled}, Checked=${checkbox.checked}`
+          ); // Log each checkbox's state
+          if (!checkbox.disabled && selectedCount < 30) {
+            checkbox.checked = true; // Check the box if it's not disabled
+            selectedCount++; // Increase the count for each selected checkbox
+          }
+        });
+
+        console.log("Total selected checkboxes:", selectedCount); // Check how many were selected
+        closeModal("selectModalkecamatan");
+      }
+
+      // Delete selected data with confirmation
+      document.getElementById("delete-selected-btn-kecamatan").onclick =
+        function () {
+          document.getElementById("deleteModalkecamatan").style.display =
+            "block";
+        };
+
+      let currentPage = 1; // Halaman saat ini
+      const itemsPerPage = 30; // Jumlah item per halaman
+      const pagesToShow = 5; // Jumlah angka halaman yang ditampilkan sekaligus
+      let totalPages = 0; // Total halaman yang akan dihitung setelah data dimuat
+      let searchParams = {}; // Simpan pencarian terakhir
+
+      // Fungsi untuk memuat data kota
+      function loadKecamatanList(searchParams = {}) {
+        console.log("Memuat data dengan parameter pencarian:", searchParams);
+        const tableBody = document.getElementById("obat-list-kecamatan");
+
+        // Tambahkan parameter pencarian ke URL
+        const queryString = new URLSearchParams(searchParams).toString();
+        console.log(
+          `Query string yang dikirim: get_kecamatan.php?${queryString}`
+        );
+
+        fetch(`get_kecamatan.php?${queryString}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data yang diterima:", data);
+
+            // Kosongkan tabel sebelum mengisi
+            tableBody.innerHTML = "";
+
+            const totalData = data.length; // Hitung total data
+
+            // Jika tidak ada data, tampilkan pesan "No results found"
+            if (totalData === 0) {
+              tableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="10" class="text-center">No results found</td>
+                                </tr>`;
+              // Update informasi pagination dan sembunyikan pagination jika tidak ada data
+              updatePaginationInfokecamatan(totalData);
+              document.getElementById(
+                "pagination-controls-kecamatan"
+              ).innerHTML = "";
+              return; // Berhenti di sini jika tidak ada data
+            }
+
+            totalPages = Math.ceil(totalData / itemsPerPage); // Hitung total halaman
+
+            // Tentukan indeks awal dan akhir data untuk halaman saat ini
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            // Ambil data yang sesuai dengan halaman saat ini
+            const pageData = data.slice(startIndex, endIndex);
+
+            // Gabungkan semua baris sebagai string sebelum menambahkan ke tabel
+            let rows = pageData
+              .map((Kecamatan) => {
+                // Ubah nilai kotaaktif menjadi "Aktif" atau "Non Aktif"
+                const kotaAktifText =
+                  Kecamatan.kotaaktif === "1" ? "Aktif" : "Non Aktif";
+
+                // Ubah nilai provinsiaktif menjadi "Aktif" atau "Non Aktif"
+                const provinsiAktifText =
+                  Kecamatan.provinsiaktif === "1" ? "Aktif" : "Non Aktif";
+
+                const kecamatanAktifText =
+                  Kecamatan.kecamatanaktif === "1" ? "Aktif" : "Non Aktif";
+
+                // Tentukan apakah checkbox harus dinonaktifkan
+                const isDisabled =
+                  Kecamatan.idkecamatan_satusehat?.trim() ||
+                  Kecamatan.provinsiaktif === "0" ||
+                  !Kecamatan.provinsiaktif ||
+                  Kecamatan.kotaaktif === "0" ||
+                  !Kecamatan.kotaaktif ||
+                  Kecamatan.kecamatanaktif === "0" ||
+                  !Kecamatan.kecamatanaktif
+                    ? "disabled"
+                    : "";
+
+                return `
+                                <tr>
+                                    <td class="checkbox-column-kecamatan">
+                                        <input type="checkbox" class="select-checkbox" ${isDisabled}>
+                                        <button class="delete-icon-kecamatan" onclick="delete_idkecamatan_Satusehat('${Kecamatan.kecamatan}')">🗑️</button>
+                                    </td>
+                                    <td>${Kecamatan.provinsi}</td>
+                                    <td>${provinsiAktifText}</td>
+                                    <td>${Kecamatan.idprovinsi_satusehat}</td>
+                                    <td>${Kecamatan.kota}</td>
+                                    <td>${kotaAktifText}</td>
+                                    <td>${Kecamatan.idkota_satusehat}</td>
+                                    <td>${Kecamatan.idkecamatan}</td>
+                                    <td>${Kecamatan.kecamatan}</td>
+                                    <td>${kecamatanAktifText}</td>
+                                    <td>${Kecamatan.idkecamatan_satusehat}</td>
+                                </tr>`;
+              })
+              .join(""); // Gabungkan semua baris menjadi satu string
+
+            // Tambahkan baris ke tabel sekali saja
+            tableBody.innerHTML = rows;
+
+            // Update kontrol pagination
+            updatePaginationControlskecamatan();
+            // Update informasi pagination
+            updatePaginationInfokecamatan(totalData);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      // Fungsi Global
+      window.delete_idkecamatan_Satusehat = function (kecamatan) {
+        if (
+          confirm("Apakah Anda yakin ingin menghapus ID kecamatan Satu Sehat?")
+        ) {
+          fetch(`delete_idkecamatan_Satusehat.php?kecamatan=${kecamatan}`, {
+            method: "GET",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("ID kecamatan Satu Sehat berhasil dihapus");
+                loadKecamatanList(searchParams); // Muat ulang data setelah penghapusan
+              } else {
+                alert("Gagal menghapus ID kecamatan Satu Sehat");
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      };
+
+      // Fungsi untuk mengupdate kontrol pagination
+      function updatePaginationControlskecamatan() {
+        const paginationContainer = document.getElementById(
+          "pagination-controls-kecamatan"
+        );
+        paginationContainer.innerHTML = ""; // Kosongkan kontrol pagination sebelumnya
+
+        const startPage = Math.max(
+          1,
+          currentPage - Math.floor(pagesToShow / 2)
+        );
+        const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
+        // Tambahkan tombol "Previous"
+        const prevButton = document.createElement("button");
+        prevButton.innerHTML = "&laquo;"; // Karakter panah ke kiri
+        prevButton.classList.add("page-button");
+        prevButton.disabled = currentPage === 1; // Nonaktifkan jika di halaman pertama
+
+        prevButton.addEventListener("click", function () {
+          if (currentPage > 1) {
+            currentPage--; // Kurangi halaman saat ini
+            loadKecamatanList(searchParams); // Muat data untuk halaman sebelumnya dengan parameter pencarian
+          }
+        });
+
+        paginationContainer.appendChild(prevButton);
+
+        // Buat tombol untuk setiap halaman yang ditampilkan
+        for (let i = startPage; i <= endPage; i++) {
+          const pageButton = document.createElement("button");
+          pageButton.innerText = i;
+          pageButton.classList.add("page-button");
+
+          // Tambahkan class "active" untuk halaman yang sedang aktif
+          if (i === currentPage) {
+            pageButton.classList.add("active"); // Tambahkan class aktif (untuk warna merah)
+          }
+
+          pageButton.addEventListener("click", function () {
+            currentPage = i;
+            loadKecamatanList(searchParams); // Muat data untuk halaman yang dipilih dengan parameter pencarian
+          });
+
+          paginationContainer.appendChild(pageButton);
+        }
+
+        // Tambahkan tombol "Next"
+        const nextButton = document.createElement("button");
+        nextButton.innerHTML = "&raquo;";
+        nextButton.classList.add("page-button");
+        nextButton.disabled = currentPage === totalPages;
+
+        nextButton.addEventListener("click", function () {
+          if (currentPage < totalPages) {
+            currentPage++;
+            loadKecamatanList(searchParams); // Muat data untuk halaman berikutnya dengan parameter pencarian
+          }
+        });
+
+        paginationContainer.appendChild(nextButton);
+
+        // Menambahkan total halaman di sebelah kanan panah
+        const totalPagesSpan = document.createElement("span");
+        totalPagesSpan.classList.add("total-pages-info");
+        totalPagesSpan.innerText = `Total ${totalPages} pages`;
+        paginationContainer.appendChild(totalPagesSpan);
+
+        // Menambahkan tulisan "Go to page"
+        const goToPageText = document.createElement("span");
+        goToPageText.classList.add("go-to-page-text");
+        goToPageText.innerText = " Go to page ";
+        paginationContainer.appendChild(goToPageText);
+
+        // Tambahkan input untuk memasukkan nomor halaman dan tombol Go
+        const pageInput = document.createElement("input");
+        pageInput.type = "number";
+        pageInput.id = "page-input";
+        pageInput.min = 1;
+        pageInput.max = totalPages;
+        pageInput.value = currentPage; // Set nilai input ke halaman saat ini
+        pageInput.classList.add("page-input");
+
+        const goButton = document.createElement("button");
+        goButton.innerText = "Go";
+        goButton.classList.add("go-button");
+
+        goButton.addEventListener("click", function () {
+          const pageNumber = parseInt(pageInput.value);
+
+          if (
+            !isNaN(pageNumber) &&
+            pageNumber > 0 &&
+            pageNumber <= totalPages
+          ) {
+            currentPage = pageNumber;
+            loadKecamatanList(searchParams); // Muat data untuk halaman yang dipilih dengan parameter pencarian
+          } else {
+            alert(
+              `Silakan masukkan angka yang valid antara 1 dan ${totalPages}`
+            );
+          }
+        });
+
+        // Tambahkan input dan tombol Go ke container pagination
+        paginationContainer.appendChild(pageInput);
+        paginationContainer.appendChild(goButton);
+      }
+
+      // Fungsi untuk memperbarui informasi pagination
+      function updatePaginationInfokecamatan(totalData) {
+        const startIndex = (currentPage - 1) * itemsPerPage + 1;
+        const endIndex = Math.min(currentPage * itemsPerPage, totalData);
+
+        const paginationInfo = document.getElementById(
+          "pagination-info-kecamatan"
+        );
+        paginationInfo.textContent = `Menampilkan ${startIndex} - ${endIndex} data dari total ${totalData} data.`;
+      }
+
+      // Event listener for the search button
+      document
+        .getElementById("cari-kecamatan")
+        .addEventListener("click", function () {
+          currentPage = 1; // Reset to the first page each time a search is performed
+
+          // Get the value of the search inputs and save them to the global searchParams variable
+          searchParams = {
+            provinsi: document.getElementById("search-provinsi").value,
+            ProvinsiAktif: document.getElementById("search-provinsiaktif")
+              .value, // Updated to get the combobox value
+            kota: document.getElementById("search-kota").value,
+            KotaAktif: document.getElementById("search-kotaaktif").value, // Updated to get the combobox value
+            idkecamatanStatus: document.getElementById(
+              "sinkronMappingkecamatan"
+            ).value,
+            IDKecamatan: document.getElementById("search-idkecamatan").value,
+            kecamatan: document.getElementById("search-kecamatan").value,
+            KecamatanAktif: document.getElementById("search-kecamatanaktif")
+              .value, // Updated to get the combobox value
+            IDKecamatanSatuSehat: document.getElementById(
+              "search-idkecamatan_satusehat"
+            ).value,
+            sortBy: document.getElementById("sortBy").value, // Ambil nilai sorting
+          };
+
+          loadKecamatanList(searchParams); // Load data with search parameters
+        });
+
+      // Fungsi untuk menampilkan modal loading
+      function showLoading() {
+        document.getElementById("loadingModalkecamatan").style.display =
+          "block";
+      }
+
+      // Fungsi untuk menyembunyikan modal loading
+      function hideLoading() {
+        document.getElementById("loadingModalkecamatan").style.display = "none";
+      }
+
+      // Event listener untuk tombol Refresh
+      document
+        .getElementById("refresh-kecamatan")
+        .addEventListener("click", function () {
+          document.getElementById(
+            "confirmRefreshModalkecamatan"
+          ).style.display = "block"; // Tampilkan modal konfirmasi
+        });
+
+      // Event listener untuk tombol Proses di dalam modal konfirmasi refresh
+      document
+        .getElementById("prosesRefreshkecamatan")
+        .addEventListener("click", function () {
+          document.getElementById(
+            "confirmRefreshModalkecamatan"
+          ).style.display = "none"; // Sembunyikan modal konfirmasi
+          showLoading(); // Tampilkan loading
+
+          // Proses Refresh
+          setTimeout(() => {
+            console.log("Tombol Refresh diklik dan konfirmasi disetujui");
+            loadKecamatanList(searchParams); // Muat ulang data tanpa mengubah pencarian
+
+            hideLoading(); // Sembunyikan loading setelah data dimuat
+          }, 1000); // Tambahkan sedikit delay agar transisi loading terlihat
+        });
+
+      // Fungsi untuk reset state dan form setelah mapping selesai
+      function resetMappingFormkecamatan() {
+        // Reset checkbox dan form
+        document.querySelectorAll(".select-checkbox").forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+
+        document
+          .querySelectorAll(".kemenkes-kecamatan-checkbox")
+          .forEach((checkbox) => {
+            checkbox.checked = false;
+          });
+
+        // Kosongkan isi kontainer hasil mapping
+        const container = document.getElementById("sync-results-kecamatan");
+        if (container) {
+          container.innerHTML = ""; // Bersihkan hasil mapping sebelumnya
+        }
+
+        // Kosongkan data obat yang dipilih
+        selectedDataKecamatan = [];
+
+        // Kembalikan tampilan halaman Mapping Obat Vmedis dan sembunyikan verifikasi
+        $("#VerificationkecamatanContent").hide(); // Menghapus elemen verifikasi sebelumnya
+        $("#header-kecamatan").show(); // Tampilkan kembali header halaman utama
+      }
+
+      // Function to sanitize the medicine name (removes numbers and spaces, and adjusts case)
+      function sanitizeNamekecamatan(name) {
+        return name.replace(/[^a-zA-Z0-9\s""'']/g, ""); // Menghapus simbol tetapi mempertahankan spasi
+      }
+
+      async function fetchAccuracykecamatan(firstString, secondString) {
+        console.log(
+          `Calculating accuracy between: "${firstString}" and "${secondString}"`
+        ); // Debugging log
+        try {
+          const response = await fetch("calculateAccuracyKecamatan.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ firstString, secondString }),
+          });
+
+          if (!response.ok)
+            throw new Error(`Error fetching accuracy: ${response.status}`);
+          const data = await response.json();
+          return data.accuracy || 0;
+        } catch (error) {
+          console.error("Error fetching accuracy:", error);
+          return 0; // Return 0 on error
+        }
+      }
+
+      // Batch accuracy calculation to reduce requests
+
+      async function calculateAccuraciesBatchkecamatan(
+        selectedKecamatanName,
+        KecamatanData
+      ) {
+        // Sanitize and standardize the selected province name
+        console.log("Selected Kecamatan Name:", selectedKecamatanName);
+        const sanitizedSelectedNameKecamatan = sanitizeNamekecamatan(
+          selectedKecamatanName
+        ).toLowerCase();
+
+        // Process the province data in parallel to calculate accuracy
+        const results = await Promise.all(
+          KecamatanData.map(async (item) => {
+            // Sanitize and standardize the Kemenkes province name
+            const sanitizedItemNameKecamatan = sanitizeNamekecamatan(
+              item.name
+            ).toLowerCase();
+            console.log("Kemenkes Kecamatan Name:", item.name);
+            // Direct match for 100% accuracy
+            let accuracy =
+              sanitizedSelectedNameKecamatan === sanitizedItemNameKecamatan
+                ? 100
+                : await fetchAccuracykecamatan(
+                    sanitizedSelectedNameKecamatan,
+                    sanitizedItemNameKecamatan
+                  );
+
+            return { ...item, accuracy: parseFloat(accuracy) };
+          })
+        );
+
+        // Filter results to only include items with accuracy >= 40%
+        const filteredResults = results.filter((item) => item.accuracy >= 40);
+
+        return filteredResults;
+      }
+
+      // Otherwise, fetch the calculated accuracy from the backend
+
+      // Function to fetch Kemenkes data from the API
+      async function fetchKecamatanData(parent_code) {
+        console.log("Fetching data for:", parent_code);
+
+        if (!parent_code || parent_code.trim() === "") {
+          console.error("Error: parent tidak diberikan.");
+          return [];
+        }
+
+        try {
+          const response = await fetch("api_kecamatan.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `IDKOTASATUSEHAT=${encodeURIComponent(parent_code)}`,
+          });
+
+          if (!response.ok) {
+            console.error(
+              "Error fetching data from Kemenkes:",
+              response.status,
+              response.statusText
+            );
+            throw new Error("Gagal mengambil data dari Kemenkes");
+          }
+
+          const data = await response.json();
+          console.warn("test data format :", data);
+
+          if (data.data && Array.isArray(data.data)) {
+            // Membatasi hanya 10 data yang diambil
+            const limitedData = data.data.slice(0, 10);
+            console.log("Limited Data:", limitedData);
+            return limitedData;
+          } else {
+            console.warn("Unexpected data format:", data);
+            return [];
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          return [];
+        }
+      }
+
+      // Function to process selected provinsi and fetch Kemenkes data
+      async function processSelectedKecamatan(selectedDataKecamatan) {
+        try {
+          const KecamatanDataPromises = selectedDataKecamatan.map((Kecamatan) =>
+            fetchKecamatanData(Kecamatan.IDKOTASATUSEHAT)
+          );
+          const KecamatanDataResults = await Promise.all(KecamatanDataPromises);
+
+          // Display verification content for selected provinces
+          displayVerificationkecamatanContent(
+            selectedDataKecamatan,
+            KecamatanDataResults
+          );
+        } catch (error) {
+          console.error(error);
+          alert("Gagal mengambil data dari API Kemenkes");
+        }
+      }
+
+      async function displayVerificationkecamatanContent(
+        selectedDataKecamatan,
+        KecamatanDataResults
+      ) {
+        const kecamatanMappingContentContainer = document.getElementById(
+          "kecamatanMappingContentContainer"
+        );
+
+        // Ensure the container exists
+        if (!kecamatanMappingContentContainer) {
+          console.error(
+            "Element with ID 'kecamatanMappingContentContainer' not found."
+          );
+          return;
+        }
+
+        // Remove previous content if it exists
+        const previousVerificationkecamatanContent = document.getElementById(
+          "VerificationkecamatanContent"
+        );
+        if (previousVerificationkecamatanContent)
+          previousVerificationkecamatanContent.remove();
+
+        // Process the data for verification
+        const verificationKecamatanItems = await Promise.all(
+          selectedDataKecamatan.map(async (selectedKecamatan, index) => {
+            // Ensure provinsiDataResults[index] exists
+
+            // Calculate accuracies for the current selected provinsi and Kemenkes data
+            console.log("Selected Kecamatan:", selectedKecamatan.KECAMATAN);
+            const dataWithAccuracy = await calculateAccuraciesBatchkecamatan(
+              selectedKecamatan.KECAMATAN,
+              KecamatanDataResults[index]
+            );
+            dataWithAccuracy.sort((a, b) => b.accuracy - a.accuracy);
+            console.log("Data with Accuracy:", dataWithAccuracy);
+
+            // Create the list of Kemenkes provinces with accuracy data
+            const kemenkesKecamatanOptions = dataWithAccuracy
+              .map((kemenkesKecamatan, i) => {
+                // Check if the accuracy is 100% and pre-check the checkbox
+                const isChecked =
+                  kemenkesKecamatan.accuracy === 100 ? "checked" : "";
+                return `
+                                        <li>
+                                            <input type="checkbox" class="kemenkes-kecamatan-checkbox" id="kemenkes-${index}-${i}" value="${
+                  kemenkesKecamatan.name
+                }" 
+                                            data-selected-index="${index}" data-kemenkes-kecamatan='${JSON.stringify(
+                  kemenkesKecamatan
+                )}' ${isChecked} />
+                                            [${
+                                              kemenkesKecamatan.accuracy
+                                            }%] - ${kemenkesKecamatan.name} - ${
+                  kemenkesKecamatan.code
+                }
+                                        </li>
+                                    `;
+              })
+              .join(""); // Join the array into a single string
+
+            return `
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                        <div style="width: 45%;">
+                                            <h3>Kecamatan Terpilih</h3>
+                                            <strong>${index + 1}.</strong> ${
+              selectedKecamatan.PROVINSI
+            } - ${selectedKecamatan.KOTA} - ${selectedKecamatan.KECAMATAN}
+                                        </div>
+                                        <div style="width: 45%;">
+                                            <h3>Data Kecamatan dari Kemenkes</h3>
+                                            ► ${selectedKecamatan.KECAMATAN}
+                                            <ul>${kemenkesKecamatanOptions}</ul>
+                                        </div>
+                                    </div>
+                                    <hr style="border: 1px solid #ddd; margin: 10px 0;">
+                                `;
+          })
+        );
+
+        const VerificationkecamatanContent = `
+                                <div id="VerificationkecamatanContent" style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                    <h2 style="text-align: center;">Verifikasi Mapping Kecamatan</h2>
+                                    ${verificationKecamatanItems.join("")}
+                                    <button id="confirmMappingKecamatan" class="btn-confirm">Konfirmasi Mapping</button>
+                                    <button id="cancelMappingKecamatan" class="btn-cancel">Batal</button>
+                                </div>
+                            `;
+
+        // Use verificationContent here
+        $("#kecamatanMappingContentContainer").append(
+          VerificationkecamatanContent
+        );
+        $("#header-kecamatan").hide();
+
+        $(document)
+          .off("click", "#confirmMappingKecamatan")
+          .on("click", "#confirmMappingKecamatan", async function (event) {
+            event.preventDefault();
+            const mappedKecamatan = [];
+
+            selectedDataKecamatan.forEach((selectedKecamatan, index) => {
+              const selectedCheckbox = document.querySelector(
+                `.kemenkes-kecamatan-checkbox[data-selected-index="${index}"]:checked`
+              );
+              if (selectedCheckbox) {
+                const kemenkesKecamatan = JSON.parse(
+                  selectedCheckbox.getAttribute("data-kemenkes-kecamatan")
+                );
+
+                mappedKecamatan.push({
+                  selected_kecamatan: {
+                    IDKECAMATAN: selectedKecamatan.IDKECAMATAN, // Pastikan IDKOTA diambil dengan benar
+                  },
+                  mapped_kemenkes_kecematan: {
+                    IDKECAMATANSATUSEHAT: kemenkesKecamatan.code, // Pastikan kode diambil dari data Kemenkes
+                  },
+                });
+              }
+            });
+
+            // Debugging: Log the mappedKecamatan array
+            console.log("Mapped Kecamatan Array:", mappedKecamatan);
+
+            if (mappedKecamatan.length > 0) {
+              try {
+                await updateVmedisDatakecamatan(mappedKecamatan);
+
+                $("#VerificationkecamatanContent").hide();
+                $("#header-kecamatan").show();
+
+                // Reload table with updated data
+              } catch (error) {
+                console.error(error);
+                alert("Terjadi kesalahan saat mengupdate data ke Vmedis.");
+              }
+            } else {
+              alert("Pilih setidaknya satu Kecamatan untuk dimapping.");
+            }
+          });
+
+        $(document)
+          .off("click", "#cancelMappingKecamatan")
+          .on("click", "#cancelMappingKecamatan", function () {
+            $("#VerificationkecamatanContent").hide();
+            $("#header-kecamatan").show();
+          });
+      }
+
+      async function updateVmedisDatakecamatan(mappedKecamatan) {
+        try {
+          const response = await fetch("update_kecamatan.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              mapped_kecamatan: mappedKecamatan,
+            }),
+          });
+
+          if (!response.ok) {
+            console.error(
+              "Failed to update Vmedis data:",
+              response.status,
+              response.statusText
+            );
+            throw new Error("HTTP error: " + response.status);
+          }
+
+          const result = await response.json();
+          console.log("Server Response:", result);
+
+          if (result.success) {
+            resetMappingFormkecamatan();
+            loadKecamatanList(searchParams); // Reload table with updated data
+            alert("Data berhasil diupdate ke Vmedis!");
+          } else {
+            alert("Gagal mengupdate data ke Vmedis.");
+          }
+        } catch (error) {
+          console.error("Error during update:", error);
+          alert("Terjadi kesalahan saat mengupdate data ke Vmedis.");
+        }
+      }
+
+      // Event handlers and existing logic
+      const matchingButtonKecamatan =
+        document.getElementById("matching-kecamatan");
+      const confirmationModalKecamatan = document.getElementById(
+        "confirmationModalkecamatan"
+      );
+      const confirmProcessButtonkecamatan = document.getElementById(
+        "confirmProcesskecamatan"
+      );
+      const cancelProcessButtonkecamatan = document.getElementById(
+        "cancelProcesskecamatan"
+      );
+      const kecamatanmappingContentContainer = document.getElementById(
+        "kecamatanMappingContentContainer"
+      );
+
+      matchingButtonKecamatan.onclick = function () {
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        let anyChecked = Array.from(checkboxes).some(
+          (checkbox) => checkbox.checked
+        );
+
+        if (anyChecked) {
+          confirmationModalKecamatan.style.display = "block";
+        } else {
+          alert("Silakan pilih obat terlebih dahulu.");
+        }
+      };
+
+      confirmProcessButtonkecamatan.onclick = async function () {
+        // Tampilkan modal loading setelah tombol "Proses" diklik
+        const loadingModal = document.getElementById("loadingModalkecamatan");
+        loadingModal.style.display = "block";
+
+        try {
+          const selectedDataKecamatan = [];
+          const checkboxes = document.querySelectorAll(".select-checkbox");
+
+          // Pilih data dari checkbox yang dicentang
+          checkboxes.forEach((checkbox, index) => {
+            if (checkbox.checked) {
+              const row = checkbox.closest("tr"); // Pastikan seleksi baris benar
+              const cells = row.cells;
+              const Provinsi = cells[1].textContent.trim();
+              const ProvinsiAktif = cells[2].textContent.trim();
+              const IDProvinsiSatuSehat = cells[3].textContent.trim();
+              const Kota = cells[4].textContent.trim();
+              const KotaAktif = cells[5].textContent.trim();
+              const IDKotaSatuSehat = cells[6].textContent.trim();
+              const IDKecamatan = cells[7].textContent.trim();
+              const Kecamatan = cells[8].textContent.trim();
+              const KecamatanAktif = cells[9].textContent.trim();
+              const IDKecamatanSatuSehat = cells[10].textContent.trim();
+
+              if (IDKecamatan) {
+                selectedDataKecamatan.push({
+                  PROVINSI: Provinsi,
+                  PROVINSIAKTIF: ProvinsiAktif,
+                  IDPROVINSISATUSEHAT: IDProvinsiSatuSehat,
+                  KOTA: Kota,
+                  KOTAaktif: KotaAktif,
+                  IDKOTASATUSEHAT: IDKotaSatuSehat,
+                  IDKECAMATAN: IDKecamatan,
+                  KECAMATAN: Kecamatan,
+                  KECAMATANAKTIF: KecamatanAktif,
+                  IDKECAMATANSATUSEHAT: IDKecamatanSatuSehat,
+                });
+              }
+            }
+          });
+
+          // Validasi apakah ada data yang dipilih
+          if (selectedDataKecamatan.length > 0) {
+            confirmationModalKecamatan.style.display = "none"; // Tutup modal konfirmasi
+
+            // Ambil obat yang dicentang dari hasil mapping Kemenkes
+            const mappedKecamatan = [];
+
+            document
+              .querySelectorAll(".kemenkes-kecamatan-checkbox:checked")
+              .forEach((checkbox) => {
+                const kemenkesKecamatan = JSON.parse(
+                  checkbox.getAttribute("data-kemenkes-kecamatan")
+                ); // Ambil data kemenkesProv dari atribut data-kemenkes-prov
+                if (kemenkesKecamatan) {
+                  mappedKecamatan.push({
+                    IDKECAMATAN: kemenkesKecamatan.IDKECAMATAN || null,
+                    KECAMATAN: checkbox.value.trim(), // Nama obat dari checkbox
+                    IDKECAMATANSATUSEHAT: kemenkesKecamatan.code,
+                    IDKOTASATUSEHAT: kemenkesKecamatan.parent_code, // Kode KFA dari data Kemenkes
+                  });
+                }
+              });
+
+            console.log("Data Kecamatan Terpilih:", selectedDataKecamatan);
+            console.log("Mapping Kecamatan Kemenkes:", mappedKecamatan);
+
+            // Proses data yang dipilih dan hasil mapping
+            await processSelectedKecamatan(
+              selectedDataKecamatan,
+              mappedKecamatan
+            );
+          } else {
+            alert("Pilih kecamatan terlebih dahulu untuk diproses.");
+          }
+        } catch (error) {
+          console.error("Error saat memproses data:", error);
+          alert("Terjadi kesalahan saat memproses data.");
+        } finally {
+          // Sembunyikan modal loading setelah selesai
+          loadingModal.style.display = "none";
+        }
+      };
+
+      cancelProcessButtonkecamatan.onclick = function () {
+        confirmationModalKecamatan.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == confirmationModalKecamatan) {
+          confirmationModalKecamatan.style.display = "none";
+        }
+      };
+
+      function confirmDelete() {
+        // Select all checkboxes with the class 'select-checkbox'
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        // Iterate through each checkbox and uncheck it
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+        // Close the modal after unchecking
+        closeModal("deleteModalkecamatan");
+      }
+
+      // Function to close the modal
+      function closeModal(modalId) {
+        console.log("Modal ID:", modalId); // Debugging log
+        const modalElement = document.getElementById(modalId);
+        if (modalElement) {
+          modalElement.style.display = "none";
+        } else {
+          console.error(`Modal with ID "${modalId}" not found.`);
+        }
+      }
+    </script>
+  </body>
+</html>

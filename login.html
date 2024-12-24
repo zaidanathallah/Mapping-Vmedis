@@ -1,0 +1,354 @@
+<html>
+ <head>
+  <title>
+   Vmedis Login
+  </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #66a6ff, #89f7fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+        }
+        .left {
+            padding: 40px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .left img {
+            display: block;
+            margin: 0 auto 20px;
+        }
+        .left h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .left input[type="text"], .left input[type="password"] {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding-left: 30px;
+            box-sizing: border-box;
+        }
+        .left input[type="text"] {
+            background: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/svgs/solid/user.svg') no-repeat 10px center;
+            background-size: 16px;
+        }
+        .left input[type="password"] {
+            background: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/svgs/solid/lock.svg') no-repeat 10px center;
+            background-size: 16px;
+        }
+        .left .recaptcha {
+            margin-bottom: 20px;
+        }
+        .left .recaptcha img {
+            display: block;
+            margin: 0 auto;
+        }
+        .left .login-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .left .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+        }
+        .left .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .header {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .header .title {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .header .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .header .user-info img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
+        .header .user-info .logout {
+            color: white;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+        .sidebar {
+            width: 60px;
+            background-color: #f8f9fa;
+            position: fixed;
+            top: 50px;
+            bottom: 0;
+            padding-top: 20px;
+            border-right: 1px solid #ddd;
+            text-align: center;
+            transition: width 0.3s;
+        }
+        .sidebar.expanded {
+            width: 300px;
+        }
+        .sidebar img {
+            display: block;
+            margin: 20px auto;
+            width: 40px;
+        }
+        .sidebar .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .sidebar.expanded .logo-container {
+            flex-direction: row;
+        }
+        .sidebar .logo-text {
+            display: none;
+            font-size: 14px;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        .sidebar.expanded .logo-text {
+            display: block;
+            margin-left: 5px;
+        }
+        .sidebar .menu-text {
+            display: none;
+            color: blue;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .sidebar.expanded .menu-text {
+            display: block;
+        }
+        .sidebar .icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .sidebar.expanded .icon-container {
+            flex-direction: row;
+        }
+        .sidebar .icon-text {
+            display: none;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .sidebar.expanded .icon-text {
+            display: block;
+        }
+        .sidebar .icon {
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        .sidebar .extra-content {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        .extra-content i {
+            margin-right: 10px;
+        }
+        .main-content {
+            margin-left: 60px;
+            padding: 70px 20px 20px 20px;
+            transition: margin-left 0.3s;
+        }
+        .main-content.expanded {
+            margin-left: 300px;
+        }
+        .main-content .content-header {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .main-content .content-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .footer {
+            text-align: left;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+            position: fixed;
+            bottom: 0;
+            width: calc(100% - 60px);
+            left: 60px;
+            transition: left 0.3s, width 0.3s;
+        }
+        .footer.expanded {
+            width: calc(100% - 300px);
+            left: 300px;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer .version {
+            float: right;
+            margin-right: 10px;
+        }
+  </style>
+  <script>
+   function validateForm() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var recaptcha = document.getElementById("recaptcha").checked;
+            var error = false;
+
+            if (username === "") {
+                document.getElementById("usernameError").style.display = "block";
+                error = true;
+            } else {
+                document.getElementById("usernameError").style.display = "none";
+            }
+
+            if (password === "") {
+                document.getElementById("passwordError").style.display = "block";
+                error = true;
+            } else {
+                document.getElementById("passwordError").style.display = "none";
+            }
+
+            if (!recaptcha) {
+                document.getElementById("recaptchaError").style.display = "block";
+                error = true;
+            } else {
+                document.getElementById("recaptchaError").style.display = "none";
+            }
+
+            if (!error) {
+                document.getElementById("loginPage").classList.add("hidden");
+                document.getElementById("dashboardPage").classList.remove("hidden");
+                document.getElementById("usernameDisplay").innerText = username;
+            }
+        }
+
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var mainContent = document.getElementById('main-content');
+            var footer = document.getElementById('footer');
+            var title = document.getElementById('title');
+            sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('expanded');
+            footer.classList.toggle('expanded');
+            if (sidebar.classList.contains('expanded')) {
+                title.innerHTML = 'Vmedis Demo <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>';
+            } else {
+                title.innerHTML = 'V-M <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>';
+            }
+        }
+
+        function toggleExtraContent() {
+            var extraContent = document.getElementById('extra-content');
+            if (extraContent.style.display === 'none' || extraContent.style.display === '') {
+                extraContent.style.display = 'flex';
+            } else {
+                extraContent.style.display = 'none';
+            }
+        }
+  </script>
+ </head>
+ <body>
+  <div id="loginPage" class="container">
+   <div class="left">
+    <img alt="Vmedis logo" height="50" src="logo.png" width="100"/>
+    <h1>
+     PT. Virtual Medis Internasional
+    </h1>
+    <div class="error" id="usernameError">
+     Username cannot be empty
+    </div>
+    <input id="username" placeholder="USERNAME" type="text"/>
+    <div class="error" id="passwordError">
+     Password cannot be empty
+    </div>
+    <input id="password" placeholder="PASSWORD" type="password"/>
+    <div class="recaptcha">
+     <input id="recaptcha" type="checkbox"/>
+     <label for="recaptcha">
+      I AM NOT  A ROBOT
+     </label>
+     <div class="error" id="recaptchaError">
+      Please verify that you are not a robot
+     </div>
+    </div>
+    <button class="login-btn" onclick="validateForm()">
+     Masuk
+    </button>
+    <div class="forgot-password">
+        <a href="#" onclick="openModal()">
+            Lupa password ?
+        </a>
+    </div>
+   </div>
+  </div>

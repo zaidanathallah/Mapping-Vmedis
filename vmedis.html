@@ -1,0 +1,1745 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin Vmedis</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="title" id="title">
+        V-M
+        <div class="menu-icon" onclick="toggleSidebar()">
+          <i class="fas fa-bars"> </i>
+        </div>
+      </div>
+      <div class="user-info">
+        <!-- Ganti src ikon secara dinamis berdasarkan jenis kelamin pengguna -->
+        <img id="userIcon" alt="User profile picture" height="30" width="30" />
+        <a class="logout" href="index.html">
+          Logout (<span id="usernameDisplay"></span>)
+        </a>
+      </div>
+    </div>
+    <div class="sidebar" id="sidebar">
+      <div class="logo-container">
+        <img alt="Vmedis logo" height="40" src="logo.png" width="40" />
+        <div class="logo-text" style="margin-right: 50px">
+          PT.Virtual Medis International
+        </div>
+      </div>
+      <div class="menu-text">Menu</div>
+      <div class="icon-container" onclick="toggleExtraContent()">
+        <i class="fas fa-bell"> </i>
+        <div class="icon-text">Vmedis Open API</div>
+      </div>
+
+      <div class="extra-content" id="extra-content">
+        <i class="fas fa-check" style="margin-right: 10px"></i>
+        <div onclick="toggleMappingContent()" style="cursor: pointer">
+          Mapping Obat Per Apotek
+        </div>
+      </div>
+
+      <div class="provinsi-content" id="provinsi-content">
+        <i class="fab fa-product-hunt" style="margin-right: 10px"></i>
+        <div onclick="showProvinsiContent()" style="cursor: pointer">
+          Mapping Provinsi
+        </div>
+      </div>
+
+      <div class="kota-content" id="kota-content">
+        <i class="fas fa-city" style="margin-right: 10px"></i>
+        <div onclick="showKotaContent()" style="cursor: pointer">
+          Mapping Kota
+        </div>
+      </div>
+
+      <div class="kecamatan-content" id="kecamatan-content">
+        <i class="fab fa-kickstarter-k" style="margin-right: 10px"></i>
+        <div onclick="showKecamatanContent()" style="cursor: pointer">
+          Mapping Kecamatan
+        </div>
+      </div>
+
+      <div class="kelurahan-content" id="kelurahan-content">
+        <i class="fab fa-kickstarter-k" style="margin-right: 10px"></i>
+        <div onclick="showKelurahanContent()" style="cursor: pointer">
+          Mapping Kelurahan
+        </div>
+      </div>
+    </div>
+
+    <!-- Elemen Dashboard Admin Vmedis ditambahkan di luar konten mapping -->
+    <div id="dashboard-title" class="dashboard-title">
+      Dashboard Admin Vmedis
+    </div>
+
+    <!-- Kontainer untuk iframe (Mapping Provinsi) -->
+    <div id="provinsi-mapping-content" style="display: none">
+      <iframe
+        id="provinsi-iframe"
+        src="provinsi.html"
+        style="width: 100%; height: 1000px; border: none"
+      ></iframe>
+    </div>
+
+    <!-- Kontainer untuk iframe (Mapping Provinsi) -->
+    <div id="kota-mapping-content" style="display: none">
+      <iframe
+        id="kota-iframe"
+        src="kota.html"
+        style="width: 100%; height: 1000px; border: none"
+      ></iframe>
+    </div>
+
+    <!-- Kontainer untuk iframe (Mapping Provinsi) -->
+    <div id="kecamatan-mapping-content" style="display: none">
+      <iframe
+        id="kecamatan-iframe"
+        src="kecamatan.html"
+        style="width: 100%; height: 1000px; border: none"
+      ></iframe>
+    </div>
+
+    <!-- Kontainer untuk iframe (Mapping Provinsi) -->
+    <div id="kelurahan-mapping-content" style="display: none">
+      <iframe
+        id="kelurahan-iframe"
+        src="kelurahan.html"
+        style="width: 100%; height: 1000px; border: none"
+      ></iframe>
+    </div>
+
+    <div id="mapping-content" style="display: none">
+      <div class="main-content" id="main-content">
+        <div id="mappingContentContainer">
+          <div class="header-container" id="header">
+            <!-- Heading -->
+            <h2 id="main-title">Mapping Obat Vmedis</h2>
+
+            <div class="container">
+              <div class="content-header">
+                <button id="cari" class="btn-custom btn-search">
+                  <i class="fas fa-search"></i> Search
+                </button>
+
+                <button id="refresh" class="btn-custom btn-refresh">
+                  <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+
+                <button id="matching" class="btn-custom btn-matching">
+                  <i class="fas fa-link"></i> Matching
+                </button>
+
+                <div style="display: inline-flex; align-items: center">
+                  <label for="sinkronMappingKfa" style="margin-right: 8px"
+                    >Sinkron Mapping</label
+                  >
+                  <select
+                    id="sinkronMappingKfa"
+                    class="form-control"
+                    style="width: auto"
+                  >
+                    <option value="belum">Belum</option>
+                    <option value="sudah">Sudah</option>
+                    <option value="semua">Semua</option>
+                  </select>
+                </div>
+              </div>
+              <table id="data-obat">
+                <thead>
+                  <tr>
+                    <th class="checkbox-column">
+                      <button class="btn btn-select" id="select-30-btn">
+                        <i class="fas fa-check-square"></i> 30</button
+                      ><button class="btn btn-delete" id="delete-selected-btn">
+                        <i class="fas fa-square"></i>
+                      </button>
+                    </th>
+                    <th style="font-size: 13px">Kode Obat</th>
+                    <th style="font-size: 13px">Kode KFA</th>
+                    <th style="font-size: 13px">Nama KFA</th>
+                    <th style="font-size: 13px">Obat Kode Bpom</th>
+                    <th style="font-size: 13px">Nama Obat</th>
+                    <th style="font-size: 13px">Satuan</th>
+                    <th style="font-size: 13px">Kategori</th>
+                    <th style="font-size: 13px">Pabrik</th>
+                    <th style="font-size: 13px">Golongan</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>
+                      <input
+                        id="search-Kode Obat"
+                        placeholder="Cari Kode Obat"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-Kode KFA"
+                        placeholder="Cari Kode KFA"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-Nama KFA"
+                        placeholder="Cari Nama KFA"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-Obat kode Bpom"
+                        placeholder="Cari Obat Kode Bpom"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-Nama Obat"
+                        placeholder="Cari Nama Obat"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-satuan"
+                        placeholder="Cari satuan"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-Kategori"
+                        placeholder="Cari Kategori"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-pabnama"
+                        placeholder="Cari Pabrik"
+                        type="text"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        id="search-golonama"
+                        placeholder="Cari Golongan"
+                        type="text"
+                      />
+                    </th>
+                  </tr>
+                </thead>
+
+                <div
+                  id="pagination-info"
+                  style="margin-top: 10px; font-size: 14px"
+                ></div>
+                <!-- Informasi jumlah data akan ditampilkan di sini -->
+
+                <tbody id="obat-list"></tbody>
+              </table>
+              <!-- Tombol pagination -->
+              <div id="pagination-controls"></div>
+              <!-- New Div for Sync Results -->
+              <div id="sync-results" style="margin-top: 20px"></div>
+
+              <!-- Modal Konfirmasi Matching -->
+              <div id="confirmationModal" class="modal">
+                <div class="modal-content">
+                  <p>Apakah anda yakin akan memproses obat yang terpilih?</p>
+                  <button id="confirmProcess" class="btn-custom btn-confirm">
+                    Proses
+                  </button>
+                  <button id="cancelProcess" class="btn-custom btn-cancel">
+                    Batal
+                  </button>
+                </div>
+              </div>
+              <!-- Modal Dialog for refresh confirmation -->
+              <div id="confirmRefreshModal" class="modal">
+                <div class="modal-content">
+                  <div class="modal-header">Konfirmasi Refresh Data</div>
+                  <p>Apakah anda yakin akan melakukan refresh data?</p>
+                  <button id="prosesRefresh">Proses</button>
+                  <button onclick="closeModal('confirmRefreshModal')">
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Modal Loading -->
+              <div id="loadingModal" class="modal">
+                <div class="modal-content">
+                  <p>Memproses, mohon tunggu...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" id="footer">
+      <a href="https://vmedis.com"> vmedis.com </a>
+      All rights reserved.
+      <span class="version"> Vmedis v2.0 </span>
+    </div>
+
+    <!-- Modal Dialog for selecting 30 data -->
+    <div id="selectModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Konfirmasi Pilihan</div>
+        <p>
+          Memilih semua data akan mereset data terpilih sebelumnya, apakah anda
+          yakin untuk melanjutkan?
+        </p>
+        <button onclick="confirmSelect()">Proses</button>
+        <button onclick="closeModal('selectModal')">Batal</button>
+      </div>
+    </div>
+
+    <!-- Modal Dialog for deleting selected data -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Konfirmasi Hapus</div>
+        <p>Apakah anda yakin menghapus semua data yang terpilih?</p>
+        <button onclick="confirmDelete()">Proses</button>
+        <button onclick="closeModal('deleteModal')">Batal</button>
+      </div>
+    </div>
+
+    <!-- Modal Dialog for selecting 30 data -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- <script src="provinsi.js"></script> -->
+
+    <script>
+      // Mendapatkan username dan gender dari localStorage
+      const username = localStorage.getItem("username");
+      const gender = localStorage.getItem("gender");
+
+      // Menampilkan nama pengguna
+      if (username) {
+        document.getElementById("usernameDisplay").textContent = username;
+      }
+
+      // Tampilkan ikon yang sesuai berdasarkan jenis kelamin
+      const userIcon = document.getElementById("userIcon");
+      if (gender === "male") {
+        userIcon.src = "male.png"; // Ganti dengan path ikon laki-laki
+      } else if (gender === "female") {
+        userIcon.src = "Female.png"; // Ganti dengan path ikon perempuan
+      }
+
+      function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        var mainContent = document.getElementById("main-content");
+        var footer = document.getElementById("footer");
+        var title = document.getElementById("title");
+        var extraContent = document.getElementById("extra-content");
+        var dashboardTitle = document.getElementById("dashboard-title");
+        var provinsiContent = document.getElementById(
+          "provinsi-mapping-content"
+        );
+        var kotaContent = document.getElementById("kota-mapping-content");
+        var kecamatanContent = document.getElementById(
+          "kecamatan-mapping-content"
+        );
+        var kelurahanContent = document.getElementById(
+          "kelurahan-mapping-content"
+        );
+
+        sidebar.classList.toggle("expanded");
+        mainContent.classList.toggle("expanded");
+        footer.classList.toggle("expanded");
+        dashboardTitle.classList.toggle("expanded");
+
+        // Ubah teks judul berdasarkan status sidebar
+        if (sidebar.classList.contains("expanded")) {
+          title.innerHTML =
+            'Vmedis <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>';
+          extraContent.style.display = "flex";
+        } else {
+          title.innerHTML =
+            'V-M <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>';
+          extraContent.style.display = "none";
+        }
+
+        // Geser isi form Mapping Provinsi
+        if (provinsiContent) {
+          if (sidebar.classList.contains("expanded")) {
+            provinsiContent.classList.add("shifted"); // Tambah kelas untuk geser ke kanan
+          } else {
+            provinsiContent.classList.remove("shifted"); // Hapus kelas untuk kembali ke posisi awal
+          }
+        }
+
+        if (kotaContent) {
+          if (sidebar.classList.contains("expanded")) {
+            kotaContent.classList.add("shifted"); // Tambah kelas untuk geser ke kanan
+          } else {
+            kotaContent.classList.remove("shifted"); // Hapus kelas untuk kembali ke posisi awal
+          }
+        }
+
+        if (kecamatanContent) {
+          if (sidebar.classList.contains("expanded")) {
+            kecamatanContent.classList.add("shifted"); // Tambah kelas untuk geser ke kanan
+          } else {
+            kecamatanContent.classList.remove("shifted"); // Hapus kelas untuk kembali ke posisi awal
+          }
+        }
+
+        if (kelurahanContent) {
+          if (sidebar.classList.contains("expanded")) {
+            kelurahanContent.classList.add("shifted"); // Tambah kelas untuk geser ke kanan
+          } else {
+            kelurahanContent.classList.remove("shifted"); // Hapus kelas untuk kembali ke posisi awal
+          }
+        }
+
+        // Tampilkan atau sembunyikan konten tambahan sesuai status sidebar
+        if (sidebar.classList.contains("expanded")) {
+          extraContent.style.display = "flex"; // Tampilkan "Mapping Obat Per Apotek"
+        } else {
+          extraContent.style.display = "none"; // Sembunyikan "Mapping Obat Per Apotek"
+        }
+      }
+
+      function toggleExtraContent() {
+        const extraContent = document.getElementById("extra-content");
+        const provinsiContent = document.getElementById("provinsi-content");
+        const kotaContent = document.getElementById("kota-content");
+        const kecamatanContent = document.getElementById("kecamatan-content");
+        const kelurahanContent = document.getElementById("kelurahan-content");
+
+        // Toggle display of all mapping menus
+        if (
+          extraContent.style.display === "none" ||
+          extraContent.style.display === ""
+        ) {
+          extraContent.style.display = "flex"; // Show "Mapping Obat Per Apotek"
+          provinsiContent.style.display = "flex"; // Show "Mapping Provinsi"
+          kotaContent.style.display = "flex"; // Show "Mapping Kota"
+          kecamatanContent.style.display = "flex"; // Show "Mapping Kecamatan"
+          kelurahanContent.style.display = "flex"; // Show "Mapping Kelurahan"
+        } else {
+          extraContent.style.display = "none"; // Hide all menus
+          provinsiContent.style.display = "none";
+          kotaContent.style.display = "none";
+          kecamatanContent.style.display = "none";
+          kelurahanContent.style.display = "none";
+        }
+      }
+
+      // Ensure menus are hidden by default
+      window.onload = function () {
+        document.getElementById("extra-content").style.display = "none";
+        document.getElementById("provinsi-content").style.display = "none";
+        document.getElementById("kota-content").style.display = "none";
+        document.getElementById("kecamatan-content").style.display = "none";
+        document.getElementById("kelurahan-content").style.display = "none";
+      };
+
+      // Handle klik pada "Mapping Obat Per Apotek"
+      function toggleMappingContent() {
+        const mappingContent = document.getElementById("mapping-content");
+        const dashboardTitle = document.getElementById("dashboard-title");
+        const iframeContainer = document.getElementById(
+          "provinsi-mapping-content"
+        );
+        const KotaContainer = document.getElementById("kota-mapping-content");
+        const KecamatanContainer = document.getElementById(
+          "kecamatan-mapping-content"
+        );
+        const KelurahanContainer = document.getElementById(
+          "kelurahan-mapping-content"
+        );
+        const body = document.body; // Mengambil elemen body untuk manipulasi kelas
+
+        if (
+          mappingContent.style.display === "none" ||
+          mappingContent.style.display === ""
+        ) {
+          mappingContent.style.display = "block";
+          dashboardTitle.style.display = "none"; // Hilangkan "Dashboard Admin Vmedis"
+          iframeContainer.style.display = "none";
+          KotaContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.add("mapping-content-active"); // Tambah kelas untuk sembunyikan
+
+          history.pushState({}, "", "index.html");
+        } else {
+          mappingContent.style.display = "none";
+          dashboardTitle.style.display = "block"; // Tampilkan kembali "Dashboard Admin Vmedis"
+          iframeContainer.style.display = "none";
+          KotaContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.remove("mapping-content-active"); // Hapus kelas ketika keluar dari halaman mapping
+        }
+        // Ubah URL menggunakan History API
+      }
+
+      // Fungsi untuk menampilkan form Mapping Provinsi
+      // Fungsi untuk menampilkan isi provinsi.html
+      // Fungsi untuk menampilkan form Mapping Provinsi
+      // Fungsi untuk menampilkan form Mapping Provinsi
+
+      function showProvinsiContent() {
+        const mappingContent = document.getElementById("mapping-content");
+        const dashboardTitle = document.getElementById("dashboard-title");
+        const iframeContainer = document.getElementById(
+          "provinsi-mapping-content"
+        );
+        const KotaContainer = document.getElementById("kota-mapping-content");
+        const KecamatanContainer = document.getElementById(
+          "kecamatan-mapping-content"
+        );
+        const KelurahanContainer = document.getElementById(
+          "kelurahan-mapping-content"
+        );
+        const body = document.body; // Mengambil elemen body untuk manipulasi kelas
+
+        if (
+          iframeContainer.style.display === "none" ||
+          iframeContainer.style.display === ""
+        ) {
+          iframeContainer.style.display = "block";
+          dashboardTitle.style.display = "none"; // Hilangkan "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          KotaContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.add("provinsi-mapping-content-active"); // Tambah kelas untuk sembunyikan
+
+          // Update URL tanpa reload
+          history.pushState({}, "", "provinsi.html");
+        } else {
+          iframeContainer.style.display = "none";
+          dashboardTitle.style.display = "block"; // Tampilkan kembali "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          KotaContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.remove("provinsi-mapping-content"); // Hapus kelas ketika keluar dari halaman mapping
+        }
+        // Ubah URL menggunakan History API
+      }
+
+      function showKotaContent() {
+        const mappingContent = document.getElementById("mapping-content");
+        const dashboardTitle = document.getElementById("dashboard-title");
+        const iframeContainer = document.getElementById(
+          "provinsi-mapping-content"
+        );
+        const KotaContainer = document.getElementById("kota-mapping-content");
+        const KecamatanContainer = document.getElementById(
+          "kecamatan-mapping-content"
+        );
+        const KelurahanContainer = document.getElementById(
+          "kelurahan-mapping-content"
+        );
+        const body = document.body; // Mengambil elemen body untuk manipulasi kelas
+
+        if (
+          KotaContainer.style.display === "none" ||
+          KotaContainer.style.display === ""
+        ) {
+          KotaContainer.style.display = "block";
+          dashboardTitle.style.display = "none"; // Hilangkan "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          iframeContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.add("kota-mapping-content-active"); // Tambah kelas untuk sembunyikan
+
+          // Update URL tanpa reload
+          history.pushState({}, "", "kota.html");
+        } else {
+          KotaContainer.style.display = "none";
+          dashboardTitle.style.display = "block"; // Tampilkan kembali "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          iframeContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.remove("kota-mapping-content"); // Hapus kelas ketika keluar dari halaman mapping
+        }
+        // Ubah URL menggunakan History API
+      }
+
+      function showKecamatanContent() {
+        const mappingContent = document.getElementById("mapping-content");
+        const dashboardTitle = document.getElementById("dashboard-title");
+        const iframeContainer = document.getElementById(
+          "provinsi-mapping-content"
+        );
+        const KotaContainer = document.getElementById("kota-mapping-content");
+        const KecamatanContainer = document.getElementById(
+          "kecamatan-mapping-content"
+        );
+        const KelurahanContainer = document.getElementById(
+          "kelurahan-mapping-content"
+        );
+        const body = document.body; // Mengambil elemen body untuk manipulasi kelas
+
+        if (
+          KecamatanContainer.style.display === "none" ||
+          KecamatanContainer.style.display === ""
+        ) {
+          KecamatanContainer.style.display = "block";
+          dashboardTitle.style.display = "none"; // Hilangkan "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          iframeContainer.style.display = "none";
+          KotaContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.add("kecamatan-mapping-content-active"); // Tambah kelas untuk sembunyikan
+
+          // Update URL tanpa reload
+          history.pushState({}, "", "kecamatan.html");
+        } else {
+          KecamatanContainer.style.display = "none";
+          dashboardTitle.style.display = "block"; // Tampilkan kembali "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          iframeContainer.style.display = "none";
+          KotaContainer.style.display = "none";
+          KelurahanContainer.style.display = "none";
+          body.classList.remove("kecamatan-mapping-content"); // Hapus kelas ketika keluar dari halaman mapping
+        }
+        // Ubah URL menggunakan History API
+      }
+
+      function showKelurahanContent() {
+        const mappingContent = document.getElementById("mapping-content");
+        const dashboardTitle = document.getElementById("dashboard-title");
+        const iframeContainer = document.getElementById(
+          "provinsi-mapping-content"
+        );
+        const KotaContainer = document.getElementById("kota-mapping-content");
+        const KecamatanContainer = document.getElementById(
+          "kecamatan-mapping-content"
+        );
+        const KelurahanContainer = document.getElementById(
+          "kelurahan-mapping-content"
+        );
+        const body = document.body; // Mengambil elemen body untuk manipulasi kelas
+
+        if (
+          KelurahanContainer.style.display === "none" ||
+          KelurahanContainer.style.display === ""
+        ) {
+          KelurahanContainer.style.display = "block";
+          dashboardTitle.style.display = "none"; // Hilangkan "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          iframeContainer.style.display = "none";
+          KotaContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          body.classList.add("kelurahan-mapping-content-active"); // Tambah kelas untuk sembunyikan
+
+          // Update URL tanpa reload
+          history.pushState({}, "", "kelurahan.html");
+        } else {
+          KelurahanContainer.style.display = "none";
+          dashboardTitle.style.display = "block"; // Tampilkan kembali "Dashboard Admin Vmedis"
+          mappingContent.style.display = "none";
+          iframeContainer.style.display = "none";
+          KotaContainer.style.display = "none";
+          KecamatanContainer.style.display = "none";
+          body.classList.remove("kelurahan-mapping-content"); // Hapus kelas ketika keluar dari halaman mapping
+        }
+        // Ubah URL menggunakan History API
+      }
+
+      window.onpopstate = function () {
+        const currentURL = window.location.pathname;
+
+        // Tampilkan konten yang sesuai berdasarkan URL
+        if (currentURL.includes("provinsi.html")) {
+          showProvinsiContent();
+        } else if (currentURL.includes("kota.html")) {
+          showKotaContent();
+        } else if (currentURL.includes("kecamatan.html")) {
+          showKecamatanContent();
+        } else if (currentURL.includes("kelurahan.html")) {
+          showKelurahanContent();
+        } else if (currentURL.includes("index.html")) {
+          showDashboardContent();
+        }
+      };
+
+      // Select 30 data with confirmation
+      document.getElementById("select-30-btn").onclick = function () {
+        document.getElementById("selectModal").style.display = "block";
+      };
+
+      function confirmSelect() {
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        let selectedCount = 0; // Track the number of selected checkboxes
+
+        checkboxes.forEach((checkbox, index) => {
+          console.log(
+            `Checkbox ${index}: Disabled=${checkbox.disabled}, Checked=${checkbox.checked}`
+          ); // Log each checkbox's state
+          if (!checkbox.disabled && selectedCount < 30) {
+            // Only select if not disabled and count is under 30
+            checkbox.checked = true;
+            selectedCount++; // Increase the count for each selected checkbox
+          }
+        });
+
+        console.log("Total selected checkboxes:", selectedCount); // Check how many were selected
+        closeModal("selectModal");
+      }
+
+      // Delete selected data with confirmation
+      document.getElementById("delete-selected-btn").onclick = function () {
+        document.getElementById("deleteModal").style.display = "block";
+      };
+
+      // OBAT VMEDIS
+
+      let currentPage = 1; // Halaman saat ini
+      const itemsPerPage = 30; // Jumlah item per halaman
+      const pagesToShow = 5; // Jumlah angka halaman yang ditampilkan sekaligus
+      let totalPages = 0; // Total halaman yang akan dihitung setelah data dimuat
+      let searchParams = {}; // Simpan pencarian terakhir
+
+      // Fungsi untuk memuat data obat
+      function loadObatList(searchParams = {}) {
+        console.log("Memuat data dengan parameter pencarian:", searchParams);
+        const tableBody = document.getElementById("obat-list");
+
+        // Tambahkan parameter pencarian ke URL
+        const queryString = new URLSearchParams(searchParams).toString();
+        console.log(`Query string yang dikirim: get_obat.php?${queryString}`);
+
+        fetch(`get_obat.php?${queryString}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data yang diterima:", data);
+            // Kosongkan tabel sebelum mengisi
+            tableBody.innerHTML = "";
+
+            const totalData = data.length; // Hitung total data
+
+            // Jika tidak ada data, tampilkan pesan "No results found"
+            if (totalData === 0) {
+              const noDataRow = `<tr>
+                <td colspan="10" class="text-center">No results found</td>
+            </tr>`;
+              tableBody.innerHTML = noDataRow;
+
+              // Update informasi pagination dan sembunyikan pagination jika tidak ada data
+              updatePaginationInfo(totalData);
+              document.getElementById("pagination-controls").innerHTML = "";
+              return; // Berhenti di sini jika tidak ada data
+            }
+
+            totalPages = Math.ceil(totalData / itemsPerPage); // Hitung total halaman
+
+            // Tentukan indeks awal dan akhir data untuk halaman saat ini
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            // Ambil data yang sesuai dengan halaman saat ini
+            const pageData = data.slice(startIndex, endIndex);
+
+            // Tampilkan data pada tabel
+            pageData.forEach((obat) => {
+              const isDisabled =
+                !obat.kfa_code || obat.kfa_code.trim() === "" ? "" : "disabled";
+
+              // In the loadObatList function, inside the row generation section
+              // In the loadObatList function, inside the row generation section
+              const row = `<tr>
+        <td class="checkbox-column">
+            <input type="checkbox" class="select-checkbox" ${isDisabled}>
+            <button class="delete-icon" onclick="deleteKfaCode('${obat.obatkode}')">
+                🗑️
+            </button>
+        </td>
+        <td>${obat.obatkode}</td>
+        <td>${obat.kfa_code}</td>
+        <td>${obat.obatindekskeamananwanitahamil}</td>
+        <td>${obat.obatkodebpom}</td>
+        <td>${obat.obatnama}</td>
+        <td>${obat.satuan1}</td>
+        <td>${obat.katonama}</td>
+        <td>${obat.pabnama}</td>
+        <td>${obat.golonama}</td>
+    </tr>`;
+              tableBody.innerHTML += row;
+            });
+
+            // Update kontrol pagination
+            updatePaginationControls();
+            // Update informasi pagination
+            updatePaginationInfo(totalData); // Panggil dengan total data
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function deleteKfaCode(obatkode) {
+        if (
+          confirm("Apakah Anda yakin ingin menghapus KFA code dan Nama KFA?")
+        ) {
+          fetch(`delete_kfa_code.php?obatkode=${obatkode}`, {
+            method: "GET",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("KFA code dan Nama KFA");
+                loadObatList(searchParams); // Reload data after deletion
+              } else {
+                alert("Gagal menghapus KFA code dan Nama KFA");
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      }
+
+      // Fungsi untuk mengupdate kontrol pagination
+      function updatePaginationControls() {
+        const paginationContainer = document.getElementById(
+          "pagination-controls"
+        );
+        paginationContainer.innerHTML = ""; // Kosongkan kontrol pagination sebelumnya
+
+        const startPage = Math.max(
+          1,
+          currentPage - Math.floor(pagesToShow / 2)
+        );
+        const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
+        // Tambahkan tombol "Previous"
+        const prevButton = document.createElement("button");
+        prevButton.innerHTML = "&laquo;"; // Karakter panah ke kiri
+        prevButton.classList.add("page-button");
+        prevButton.disabled = currentPage === 1; // Nonaktifkan jika di halaman pertama
+
+        prevButton.addEventListener("click", function () {
+          if (currentPage > 1) {
+            currentPage--; // Kurangi halaman saat ini
+            loadObatList(searchParams); // Muat data untuk halaman sebelumnya dengan parameter pencarian
+          }
+        });
+
+        paginationContainer.appendChild(prevButton);
+
+        // Buat tombol untuk setiap halaman yang ditampilkan
+        for (let i = startPage; i <= endPage; i++) {
+          const pageButton = document.createElement("button");
+          pageButton.innerText = i;
+          pageButton.classList.add("page-button");
+
+          // Tambahkan class "active" untuk halaman yang sedang aktif
+          if (i === currentPage) {
+            pageButton.classList.add("active"); // Tambahkan class aktif (untuk warna merah)
+          }
+
+          pageButton.addEventListener("click", function () {
+            currentPage = i;
+            loadObatList(searchParams); // Muat data untuk halaman yang dipilih dengan parameter pencarian
+          });
+
+          paginationContainer.appendChild(pageButton);
+        }
+
+        // Tambahkan tombol "Next"
+        const nextButton = document.createElement("button");
+        nextButton.innerHTML = "&raquo;";
+        nextButton.classList.add("page-button");
+        nextButton.disabled = currentPage === totalPages;
+
+        nextButton.addEventListener("click", function () {
+          if (currentPage < totalPages) {
+            currentPage++;
+            loadObatList(searchParams); // Muat data untuk halaman berikutnya dengan parameter pencarian
+          }
+        });
+
+        paginationContainer.appendChild(nextButton);
+
+        // Menambahkan total halaman di sebelah kanan panah
+        const totalPagesSpan = document.createElement("span");
+        totalPagesSpan.classList.add("total-pages-info");
+        totalPagesSpan.innerText = `Total ${totalPages} pages`;
+        paginationContainer.appendChild(totalPagesSpan);
+
+        // Menambahkan tulisan "Go to page"
+        const goToPageText = document.createElement("span");
+        goToPageText.classList.add("go-to-page-text");
+        goToPageText.innerText = " Go to page ";
+        paginationContainer.appendChild(goToPageText);
+
+        // Tambahkan input untuk memasukkan nomor halaman dan tombol Go
+        const pageInput = document.createElement("input");
+        pageInput.type = "number";
+        pageInput.id = "page-input";
+        pageInput.min = 1;
+        pageInput.max = totalPages;
+        pageInput.value = currentPage; // Set nilai input ke halaman saat ini
+        pageInput.classList.add("page-input");
+
+        const goButton = document.createElement("button");
+        goButton.innerText = "Go";
+        goButton.classList.add("go-button");
+
+        goButton.addEventListener("click", function () {
+          const pageNumber = parseInt(pageInput.value);
+
+          if (
+            !isNaN(pageNumber) &&
+            pageNumber > 0 &&
+            pageNumber <= totalPages
+          ) {
+            currentPage = pageNumber;
+            loadObatList(searchParams); // Muat data untuk halaman yang dipilih dengan parameter pencarian
+          } else {
+            alert(
+              `Silakan masukkan angka yang valid antara 1 dan ${totalPages}`
+            );
+          }
+        });
+
+        // Tambahkan input dan tombol Go ke container pagination
+        paginationContainer.appendChild(pageInput);
+        paginationContainer.appendChild(goButton);
+      }
+
+      // Fungsi untuk memperbarui informasi pagination
+      function updatePaginationInfo(totalData) {
+        const startIndex = (currentPage - 1) * itemsPerPage + 1;
+        const endIndex = Math.min(currentPage * itemsPerPage, totalData);
+
+        const paginationInfo = document.getElementById("pagination-info");
+        paginationInfo.textContent = `Menampilkan ${startIndex} - ${endIndex} data dari total ${totalData} data.`;
+      }
+
+      // Event listener untuk tombol pencarian (Search)
+      document.getElementById("cari").addEventListener("click", function () {
+        currentPage = 1; // Reset ke halaman pertama setiap kali pencarian dilakukan
+
+        // Ambil nilai dari input pencarian dan simpan ke variabel global searchParams
+        searchParams = {
+          obatkode: document.getElementById("search-Kode Obat").value,
+          kfa_code: document.getElementById("search-Kode KFA").value,
+          obatkodebpom: document.getElementById("search-Obat kode Bpom").value,
+          obatnama: document.getElementById("search-Nama Obat").value,
+          satuan1: document.getElementById("search-satuan").value,
+          katonama: document.getElementById("search-Kategori").value,
+          pabnama: document.getElementById("search-pabnama").value,
+          golonama: document.getElementById("search-golonama").value,
+          // Tambahkan nilai filter KFA
+          kfaStatus: document.getElementById("sinkronMappingKfa").value,
+        };
+
+        loadObatList(searchParams); // Muat data dengan parameter pencarian
+      });
+
+      // Fungsi untuk menampilkan modal loading
+      function showLoading() {
+        document.getElementById("loadingModal").style.display = "block";
+      }
+
+      // Fungsi untuk menyembunyikan modal loading
+      function hideLoading() {
+        document.getElementById("loadingModal").style.display = "none";
+      }
+
+      // Event listener untuk tombol Refresh
+      document.getElementById("refresh").addEventListener("click", function () {
+        document.getElementById("confirmRefreshModal").style.display = "block"; // Tampilkan modal konfirmasi
+      });
+
+      // Event listener untuk tombol Proses di dalam modal konfirmasi refresh
+      document
+        .getElementById("prosesRefresh")
+        .addEventListener("click", function () {
+          document.getElementById("confirmRefreshModal").style.display = "none"; // Sembunyikan modal konfirmasi
+          showLoading(); // Tampilkan loading
+
+          // Proses Refresh
+          setTimeout(() => {
+            console.log("Tombol Refresh diklik dan konfirmasi disetujui");
+            loadObatList(searchParams); // Muat ulang data tanpa mengubah pencarian
+
+            hideLoading(); // Sembunyikan loading setelah data dimuat
+          }, 1000); // Tambahkan sedikit delay agar transisi loading terlihat
+        });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fungsi untuk reset state dan form setelah mapping selesai
+        function resetMappingForm() {
+          // Reset checkbox dan form
+          document.querySelectorAll(".select-checkbox").forEach((checkbox) => {
+            checkbox.checked = false;
+          });
+
+          document
+            .querySelectorAll(".kemenkes-checkbox")
+            .forEach((checkbox) => {
+              checkbox.checked = false;
+            });
+
+          // Kosongkan isi kontainer hasil mapping
+          const container = document.getElementById("sync-results");
+          if (container) {
+            container.innerHTML = ""; // Bersihkan hasil mapping sebelumnya
+          }
+
+          // Kosongkan data obat yang dipilih
+          selectedData = [];
+
+          // Kembalikan tampilan halaman Mapping Obat Vmedis dan sembunyikan verifikasi
+          $("#verificationContent").hide(); // Menghapus elemen verifikasi sebelumnya
+          $("#header").show(); // Tampilkan kembali header halaman utama
+        }
+
+        // Function to sanitize the medicine name (removes numbers and spaces, and adjusts case)
+        function sanitizeName(name) {
+          return name.replace(/[^a-zA-Z0-9\s]/g, ""); // Menghapus simbol tetapi mempertahankan spasi
+        }
+
+        async function fetchAccuracy(firstString, secondString) {
+          try {
+            const response = await fetch("calculate_accuracy.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ firstString, secondString }),
+            });
+            if (!response.ok)
+              throw new Error(`Error fetching accuracy: ${response.status}`);
+            const data = await response.json();
+            return data.accuracy || 0;
+          } catch (error) {
+            console.error("Error fetching accuracy:", error);
+            return 0; // Return 0 on error
+          }
+        }
+
+        // Batch accuracy calculation to reduce requests
+        async function calculateAccuraciesBatch(selectedMedName, kemenkesData) {
+          // Convert selectedMedName to lowercase for case-insensitive comparison
+          const sanitizedSelectedName =
+            sanitizeName(selectedMedName).toLowerCase();
+
+          const results = await Promise.all(
+            kemenkesData.map(async (item) => {
+              // Convert each Kemenkes name to lowercase
+              const sanitizedItemName = sanitizeName(item.name).toLowerCase();
+
+              // Direct match or fetch accuracy based on case-insensitive names
+              let accuracy =
+                sanitizedSelectedName === sanitizedItemName
+                  ? 100
+                  : await fetchAccuracy(
+                      sanitizedSelectedName,
+                      sanitizedItemName
+                    );
+
+              return { ...item, accuracy: parseFloat(accuracy) };
+            })
+          );
+          return results;
+        }
+
+        // Function to fetch Kemenkes data from the API
+        async function fetchKemenkesData(name) {
+          console.log("Fetching data for:", name);
+
+          if (!name || name.trim() === "") {
+            console.error("Error: Nama obat tidak diberikan.");
+            return [];
+          }
+
+          try {
+            const response = await fetch("test_api.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: `nama_obat=${encodeURIComponent(name)}`,
+            });
+
+            if (!response.ok) {
+              console.error(
+                "Error fetching data from Kemenkes:",
+                response.status,
+                response.statusText
+              );
+              throw new Error("Gagal mengambil data dari Kemenkes");
+            }
+
+            const data = await response.json();
+
+            if (data.items && Array.isArray(data.items.data)) {
+              return data.items.data;
+            } else {
+              console.warn("Unexpected data format:", data);
+              return [];
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            return [];
+          }
+        }
+
+        async function deepMatching(index) {
+          // Example Fix in deepMatching
+          const deepMatchingContainer = $(`
+    <div id="deepMatchingContainer-${index}" style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px 0;">
+        <h3 style="text-align: center;">Pencocokan Lebih Dalam Obat</h3>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="width: 20%;">
+                <label for="productType-${index}">Product Type:</label>
+                <select id="productType-${index}" style="width: 100%; padding: 6px; margin-bottom: 10px;">
+                    <option value="farmasi">farmasi</option>
+                    <option value="alkes">alkes</option>
+                </select>
+            </div>
+            <div style="width: 35%;">
+                <label for="searchNamaObat-${index}">Pencarian Berdasarkan Nama Obat:</label>
+                <input type="text" id="searchNamaObat-${index}" placeholder="Masukkan nama obat" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            </div>
+        </div>
+        <div style="display: flex; justify-content: flex-start;">
+            <button id="startSearch-${index}" class="btn-search" style="margin-top: 10px;">Mulai Pencarian</button>
+            <button id="cancelDeepMatching-${index}" class="btn-cancel" style="margin-top: 10px; margin-left: 10px;">Batal</button>
+        </div>
+        <div id="searchResults-${index}" style="margin-top: 20px;"></div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+            <button id="confirmDeepMapping-${index}" class="btn-confirm" style="margin-top: 10px;">Konfirmasi</button>
+        </div>
+    </div>
+`);
+          $("#mappingContentContainer").append(deepMatchingContainer);
+          $("#verificationContent").hide();
+          $("#header").hide();
+
+          // Search button click event
+          $(`#startSearch-${index}`).on("click", async function () {
+            const typeValue = $(`#productType-${index}`).val();
+            const nameValue = $(`#searchNamaObat-${index}`).val();
+
+            if (!typeValue || !nameValue) {
+              alert("Please select a product type and enter a product name.");
+              return;
+            }
+
+            try {
+              const searchResults = await performSearch(nameValue, typeValue);
+              displaySearchResults(searchResults, index);
+            } catch (error) {
+              console.error("Error fetching search results:", error);
+            }
+          });
+
+          // Cancel button click event
+          $(document).one("click", `#cancelDeepMatching-${index}`, function () {
+            $("#verificationContent").show();
+            $(`#deepMatchingContainer-${index}`).remove();
+          });
+
+          // Confirm deep mapping button click event
+          $(`#confirmDeepMapping-${index}`).on("click", function () {
+            const selectedItems = $(
+              `#searchResults-${index} input[type="checkbox"]:checked`
+            )
+              .map(function () {
+                const medicationData = $(this).data("additional-med"); // Now has full data from performSearch
+                return {
+                  name: medicationData.name,
+                  kfa_code: medicationData.kfa_code,
+                  obatkodebpom: medicationData.obatkodebpom,
+                  pabnama: medicationData.pabnama,
+                };
+              })
+              .get();
+
+            console.log("Selected items for deep mapping:", selectedItems);
+
+            if (selectedItems.length > 0) {
+              const additionalItemsList = selectedItems
+                .map((item, j) => {
+                  return `
+                                <li>
+                                    <input type="checkbox" class="additional-checkbox" id="additional-${index}-${j}"
+                                           data-selected-index="${index}" data-additional-med='${JSON.stringify(
+                    item
+                  )}' />
+                                    <span>${item.name} - ${
+                    item.obatkodebpom
+                  } - ${item.pabnama}</span>
+                                </li>
+                            `;
+                })
+                .join("");
+
+              $(`#additionalItems-${index}`).append(additionalItemsList);
+
+              // Attach change event listeners to the new checkboxes
+              $(`#additionalItems-${index} .additional-checkbox`).on(
+                "change",
+                function () {
+                  updateMappedMedsArray(this, "additional");
+                }
+              );
+
+              $("#verificationContent").show();
+              $(`#deepMatchingContainer-${index}`).remove();
+            } else {
+              alert("Pilih setidaknya satu obat.");
+            }
+          });
+        }
+
+        function updateMappedMedsArray(element, type) {
+          const selectedIndex = $(element).data("selected-index");
+          const medicationData = $(element).data(
+            type === "additional" ? "additional-med" : "kemenkes-med"
+          );
+
+          if (!medicationData) {
+            console.error("Medication data is undefined for element:", element);
+            return;
+          }
+
+          if ($(element).is(":checked")) {
+            // Add the item to the mapped array if the checkbox is checked
+            mappedMeds.push({
+              selected_index: selectedIndex,
+              medication_data: medicationData,
+              type: type, // Track if it's an additional or main item
+            });
+            console.log("Selected Index:", selectedIndex);
+            console.log("Medication Data:", medicationData);
+            console.log("Type:", type);
+          } else {
+            // Remove the item if unchecked, checking that medication_data.name exists
+            mappedMeds = mappedMeds.filter(
+              (med) =>
+                med.selected_index !== selectedIndex ||
+                med.medication_data.name !== medicationData.name
+            );
+          }
+        }
+
+        // 1. Declare the mappedMeds array globally
+        let mappedMeds = [];
+
+        // Saat menampilkan hasil pencarian, tambahkan data-index dan data tambahan
+        function displaySearchResults(items, index) {
+          const searchResultsContainer = $(`#searchResults-${index}`);
+          searchResultsContainer.empty(); // Clear previous results
+
+          console.log(
+            "Displaying search results for index:",
+            index,
+            "Items:",
+            items
+          );
+
+          if (!items || items.length === 0) {
+            searchResultsContainer.html("<p>No products found.</p>");
+            return;
+          }
+
+          items.forEach((item) => {
+            const productItem = $(`
+                        <div class="product-item" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" class="additional-checkbox" data-selected-index="${index}"
+                                   data-additional-med='${JSON.stringify(
+                                     item
+                                   )}' style="margin-right: 10px;">
+                            <span>${item.name} - ${item.obatkodebpom} - ${item.pabnama}</span>
+                        </div>
+                    `);
+
+            // Append the element to the results container
+            searchResultsContainer.append(productItem);
+          });
+        }
+
+        // Function to fetch Kemenkes data from the API
+        async function performSearch(name, productType) {
+          console.log(
+            "Fetching data for:",
+            name,
+            "with product type:",
+            productType
+          );
+
+          if (
+            !name ||
+            name.trim() === "" ||
+            !productType ||
+            productType.trim() === ""
+          ) {
+            console.error(
+              "Error: Nama obat atau product type tidak diberikan."
+            );
+            return [];
+          }
+
+          try {
+            const response = await fetch("kemenkes_api.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: `nama_obat=${encodeURIComponent(
+                name
+              )}&product_type=${encodeURIComponent(productType)}`,
+            });
+
+            if (!response.ok) {
+              console.error(
+                "Error fetching data from Kemenkes:",
+                response.status,
+                response.statusText
+              );
+              throw new Error("Gagal mengambil data dari Kemenkes");
+            }
+
+            const data = await response.json();
+            console.log(
+              "Data fetched from API:",
+              JSON.stringify(data, null, 2)
+            );
+
+            // Periksa apakah data.items.data adalah array dan hanya kembalikan data yang relevan
+            if (
+              data.items &&
+              data.items.data &&
+              Array.isArray(data.items.data)
+            ) {
+              return data.items.data.map((item) => ({
+                name: item.name || "No Name",
+                kfa_code: item.kfa_code || "No kfa_kode",
+                obatkodebpom: item.nie || "No obatkodebpom",
+                pabnama: item.manufacturer || "No Manufacturer",
+              }));
+              console.log("Fetched item:", item);
+            } else {
+              console.warn("Unexpected data format:", data);
+              return [];
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            return [];
+          }
+        }
+
+        // Function to process selected medications and fetch Kemenkes data
+        async function processSelectedMedications(selectedData) {
+          try {
+            const kemenkesDataPromises = selectedData.map((obat) =>
+              fetchKemenkesData(obat.nama_obat)
+            );
+            const kemenkesDataResults = await Promise.all(kemenkesDataPromises);
+
+            displayVerificationContent(selectedData, kemenkesDataResults);
+          } catch (error) {
+            console.error(error);
+            alert("Gagal mengambil data dari API Kemenkes");
+          }
+        }
+
+        async function displayVerificationContent(
+          selectedData,
+          kemenkesDataResults
+        ) {
+          const mappingContentContainer = document.getElementById(
+            "mappingContentContainer"
+          );
+          if (!mappingContentContainer) {
+            console.error(
+              "Element with ID 'mappingContentContainer' not found."
+            );
+            return;
+          }
+
+          const previousVerificationContent = document.getElementById(
+            "verificationContent"
+          );
+          if (previousVerificationContent) previousVerificationContent.remove();
+
+          const verificationItems = await Promise.all(
+            selectedData.map(async (selectedMed, index) => {
+              const dataWithAccuracy = await calculateAccuraciesBatch(
+                selectedMed.nama_obat,
+                kemenkesDataResults[index]
+              );
+              dataWithAccuracy.sort((a, b) => b.accuracy - a.accuracy);
+
+              const kemenkesOptions = dataWithAccuracy
+                .map(
+                  (kemenkesMed, i) => `
+                        <li>
+                            <input type="checkbox" class="kemenkes-checkbox" id="kemenkes-${index}-${i}" value="${
+                    kemenkesMed.name
+                  }"
+                            data-selected-index="${index}" data-kemenkes-med='${JSON.stringify(
+                    kemenkesMed
+                  )}' />
+                            [${kemenkesMed.accuracy}%] - ${
+                    kemenkesMed.name
+                  } - ${kemenkesMed.nie} - ${kemenkesMed.manufacturer}
+                        </li>
+                    `
+                )
+                .join("");
+
+              const additionalItemsPlaceholder = `
+                        <ul id="additionalItems-${index}">
+                            ${
+                              selectedMed.additionalItems &&
+                              selectedMed.additionalItems.length > 0
+                                ? selectedMed.additionalItems
+                                    .map(
+                                      (item, j) => `
+                                    <li>
+                                        <input type="checkbox" class="additional-checkbox" id="additional-${index}-${j}" value="${
+                                        item.name
+                                      }"
+                                        data-selected-index="${index}" data-additional-med='${JSON.stringify(
+                                        item
+                                      )}' />
+                                        ${item.name} - ${item.obatkodebpom} - ${
+                                        item.pabnama
+                                      }
+                                    </li>
+                                `
+                                    )
+                                    .join("")
+                                : ""
+                            }
+                        </ul>
+                    `;
+
+              const newMedOption = `
+                        <li>
+                            <button id="searchButton-${index}" class="btn-search">Search</button>
+                        </li>
+                    `;
+
+              return `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <div style="width: 45%;">
+                                <h3>Obat Terpilih</h3>
+                                <strong>${index + 1}.</strong> ${
+                selectedMed.nama_obat
+              } - ${selectedMed.code_bpom} - ${selectedMed.pabrik} - ${
+                selectedMed.NamaKFA
+              }
+                            </div>
+                            <div style="width: 45%;">
+                                <h4>Data Obat dari Kemenkes</h4>
+                                ► ${selectedMed.nama_obat}
+                                <ul>${kemenkesOptions}</ul>
+                                ${additionalItemsPlaceholder}
+                                ${newMedOption}
+                            </div>
+                        </div>
+                        <hr style="border: 1px solid #ddd; margin: 10px 0;">
+                    `;
+            })
+          );
+
+          const verificationContent = `
+                    <div id="verificationContent" style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <h2 style="text-align: center;">Verifikasi Mapping Obat Vmedis</h2>
+                        ${verificationItems.join("")}
+                        <button id="confirmMapping" class="btn-confirm">Konfirmasi Mapping</button>
+                        <button id="cancelMapping" class="btn-cancel">Batal</button>
+                    </div>
+                `;
+
+          $("#mappingContentContainer").append(verificationContent);
+          $("#header").hide();
+
+          selectedData.forEach((_, index) => {
+            document
+              .getElementById(`searchButton-${index}`)
+              .addEventListener("click", () => {
+                deepMatching(index);
+              });
+          });
+
+          $(document)
+            .off("click", "#confirmMapping")
+            .on("click", "#confirmMapping", async function (event) {
+              event.preventDefault();
+              const mappedMeds = [];
+
+              selectedData.forEach((selectedMed, index) => {
+                const selectedCheckbox = document.querySelector(
+                  `.kemenkes-checkbox[data-selected-index="${index}"]:checked`
+                );
+                if (selectedCheckbox) {
+                  const kemenkesMed = JSON.parse(
+                    selectedCheckbox.getAttribute("data-kemenkes-med")
+                  );
+                  mappedMeds.push({
+                    selected_med: selectedMed,
+                    mapped_kemenkes_med: {
+                      name: kemenkesMed.name,
+                      kfa_code: kemenkesMed.kfa_code,
+                      obatkodebpom: kemenkesMed.nie,
+                      pabnama: kemenkesMed.manufacturer,
+                      // Tambahkan kolom obatindekskeamananwanitahamil
+                      obatindekskeamananwanitahamil: kemenkesMed.name,
+                    },
+                  });
+                }
+              });
+
+              selectedData.forEach((selectedMed, index) => {
+                const selectedCheckbox = document.querySelector(
+                  `.additional-checkbox[data-selected-index="${index}"]:checked`
+                );
+                if (selectedCheckbox) {
+                  const additionalMed = JSON.parse(
+                    selectedCheckbox.getAttribute("data-additional-med")
+                  );
+
+                  // Debugging: Check additionalMed contents
+                  console.log("Additional Med Data:", additionalMed);
+
+                  mappedMeds.push({
+                    selected_med: selectedMed,
+                    mapped_additional_med: {
+                      name: additionalMed.name,
+                      kfa_code: additionalMed.kfa_code,
+                      obatkodebpom: additionalMed.obatkodebpom, // pastikan ini sesuai
+                      pabnama: additionalMed.pabnama, // pastikan ini sesuai
+                      // Tambahkan kolom obatindekskeamananwanitahamil
+                      obatindekskeamananwanitahamil: additionalMed.name,
+                    },
+                  });
+                }
+              });
+
+              // Debugging: Log the mappedMeds array
+              console.log("Mapped Meds Array:", mappedMeds);
+
+              // Check if mappedMeds has at least one entry
+              if (mappedMeds.length > 0) {
+                try {
+                  // Call the function to update Vmedis with the mapped data
+                  await updateVmedisData(mappedMeds);
+
+                  // Hide verification content and show header
+                  $("#verificationContent").hide();
+                  $("#header").show();
+                } catch (error) {
+                  console.error("Error during mapping process:", error);
+                  alert("Terjadi kesalahan saat mengupdate data ke Vmedis.");
+                }
+              } else {
+                alert("Pilih setidaknya satu obat untuk dimapping.");
+              }
+            });
+
+          // Cancel Mapping handler remains unchanged
+          $(document)
+            .off("click", "#cancelMapping")
+            .on("click", "#cancelMapping", function () {
+              $("#verificationContent").hide();
+              $("#header").show();
+            });
+        }
+
+        async function updateVmedisData(mappedMeds) {
+          try {
+            const response = await fetch("update_vmedis.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                mapped_meds: mappedMeds,
+              }),
+            });
+
+            if (!response.ok) {
+              console.error(
+                "Failed to update Vmedis data:",
+                response.status,
+                response.statusText
+              );
+              throw new Error("Failed to update Vmedis data");
+            }
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+              console.error("Response is not JSON:", await response.text());
+              throw new Error("Response is not JSON");
+            }
+
+            const result = await response.json();
+            if (result.success) {
+              resetMappingForm();
+
+              // Reload the data in the table to show updated results without manual refresh
+              loadObatList(searchParams); // Ensure `searchParams` holds the latest filter values
+
+              alert("Data berhasil diupdate ke Vmedis!");
+            } else {
+              alert("Gagal mengupdate data ke Vmedis.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan saat mengupdate data ke Vmedis.");
+          }
+        }
+
+        // Event handlers and existing logic
+        const matchingButton = document.getElementById("matching");
+        const confirmationModal = document.getElementById("confirmationModal");
+        const confirmProcessButton = document.getElementById("confirmProcess");
+        const cancelProcessButton = document.getElementById("cancelProcess");
+        const mappingContentContainer = document.getElementById(
+          "mappingContentContainer"
+        );
+
+        matchingButton.onclick = function () {
+          const checkboxes = document.querySelectorAll(".select-checkbox");
+          let anyChecked = Array.from(checkboxes).some(
+            (checkbox) => checkbox.checked
+          );
+
+          if (anyChecked) {
+            confirmationModal.style.display = "block";
+          } else {
+            alert("Silakan pilih obat terlebih dahulu.");
+          }
+        };
+
+        confirmProcessButton.onclick = async function () {
+          // Tampilkan modal loading setelah tombol "Proses" diklik
+          const loadingModal = document.getElementById("loadingModal");
+          loadingModal.style.display = "block";
+
+          try {
+            const selectedData = [];
+            const checkboxes = document.querySelectorAll(".select-checkbox");
+
+            // Pilih data dari checkbox yang dicentang
+            checkboxes.forEach((checkbox, index) => {
+              if (checkbox.checked) {
+                const row = checkbox.closest("tr"); // Pastikan seleksi baris benar
+                const cells = row.cells;
+
+                const namaObat = cells[5].textContent.trim();
+                const codeBpom = cells[4].textContent.trim();
+                const pabrik = cells[8].textContent.trim();
+                const NamaKFA = cells[3].textContent.trim();
+
+                if (namaObat) {
+                  selectedData.push({
+                    nama_obat: namaObat,
+                    code_bpom: codeBpom,
+                    pabrik: pabrik,
+                    NamaKFA: NamaKFA,
+                  });
+                }
+              }
+            });
+            if (selectedData.length > 0) {
+              confirmationModal.style.display = "none";
+
+              // Ambil obat yang dicentang dari hasil mapping Kemenkes
+              const mappedMeds = [];
+
+              document
+                .querySelectorAll(".kemenkes-checkbox:checked")
+                .forEach((checkbox) => {
+                  const kemenkesMed = JSON.parse(
+                    checkbox.getAttribute("data-kemenkes-med")
+                  ); // Ambil data kemenkesMed dari atribut data-kemenkes-med
+                  mappedMeds.push({
+                    name: checkbox.value, // Nama obat dari checkbox
+                    kfa_code: kemenkesMed.kfa_code, // Kode KFA dari data Kemenkes
+                    obatkodebpom: kemenkesMed.nie, // Kode BPOM dari data Kemenkes
+                    pabnama: kemenkesMed.manufacturer, // Pabrik (manufacturer) dari data Kemenkes
+                    obatindekskeamananwanitahamil: kemenkesMed.name, // Menambahkan data untuk 'obatindekskeamananwanitahamil'
+                  });
+                });
+
+              document
+                .querySelectorAll(".additional-checkbox:checked")
+                .forEach((checkbox) => {
+                  const additionalMed = JSON.parse(
+                    checkbox.getAttribute("data-additional-med")
+                  ); // Ambil data additionalMed dari atribut data-additional-med
+                  mappedMeds.push({
+                    name: checkbox.value, // Nama obat dari checkbox
+                    kfa_code: additionalMed.kfa_code, // Kode KFA dari data tambahan
+                    obatkodebpom: additionalMed.obatkodebpom, // Kode BPOM dari data tambahan
+                    pabnama: additionalMed.pabnama, // Pabrik dari data tambahan
+                    obatindekskeamananwanitahamil: additionalMed.name, // Menambahkan data untuk 'obatindekskeamananwanitahamil'
+                  });
+                });
+
+              console.log("Data Obat Terpilih:", selectedData);
+              console.log("Mapping Provinsi Kemenkes:", mappedMeds);
+
+              // Proses data yang dipilih dan hasil mapping
+              await processSelectedMedications(selectedData, mappedMeds);
+            } else {
+              alert("Pilih Obat terlebih dahulu untuk diproses.");
+            }
+          } catch (error) {
+            console.error("Error saat memproses data:", error);
+            alert("Terjadi kesalahan saat memproses data.");
+          } finally {
+            // Sembunyikan modal loading setelah selesai
+            loadingModal.style.display = "none";
+          }
+        };
+
+        cancelProcessButton.onclick = function () {
+          confirmationModal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+          if (event.target == confirmationModal) {
+            confirmationModal.style.display = "none";
+          }
+        };
+      });
+
+      // Function to confirm deletion and uncheck all selected checkboxes
+      function confirmDelete() {
+        // Select all checkboxes with the class 'select-checkbox'
+        const checkboxes = document.querySelectorAll(".select-checkbox");
+        // Iterate through each checkbox and uncheck it
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+        // Close the modal after unchecking
+        closeModal("deleteModal");
+      }
+
+      // Function to close the modal
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+    </script>
+  </body>
+</html>
