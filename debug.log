@@ -4880,3 +4880,21 @@ Attempting Update: IDKELURAHANSATUSEHAT = 3216162006, IDKELURAHAN = 8875
 Query Succeeded: 1 rows affected.
 Attempting Update: IDKELURAHANSATUSEHAT = 3216162005, IDKELURAHAN = 8874
 Query Succeeded: 1 rows affected.
+{"mapped_province":[{"selected_provinsi":{"PROVINSI":"Aceh","PROVINSIAKTIF":"Aktif","IDPROVINSISATUSEHAT":"null"},"mapped_kemenkes_provinsi":{"PROVINSI":"Aceh","IDPROVINSISATUSEHAT":"11"}}]}
+{"mapped_province":[{"selected_provinsi":{"PROVINSI":"Aceh","PROVINSIAKTIF":"Aktif","IDPROVINSISATUSEHAT":"null"},"mapped_kemenkes_provinsi":{"PROVINSI":"Aceh","IDPROVINSISATUSEHAT":"11"}},{"selected_provinsi":{"PROVINSI":"Bali","PROVINSIAKTIF":"Aktif","IDPROVINSISATUSEHAT":"null"},"mapped_kemenkes_provinsi":{"PROVINSI":"Bali","IDPROVINSISATUSEHAT":"51"}}]}
+{"mapped_kota":[{"selected_kota":{"IDKOTA":"2206"},"mapped_kemenkes_kota":{"IDKOTASATUSEHAT":"1105"}},{"selected_kota":{"IDKOTA":"2211"},"mapped_kemenkes_kota":{"IDKOTASATUSEHAT":"1112"}},{"selected_kota":{"IDKOTA":"2207"},"mapped_kemenkes_kota":{"IDKOTASATUSEHAT":"1106"}},{"selected_kota":{"IDKOTA":"2215"},"mapped_kemenkes_kota":{"IDKOTASATUSEHAT":"1114"}}]}
+{"mapped_kecamatan":[{"selected_kecamatan":{"IDKECAMATAN":"30631"},"mapped_kemenkes_kecematan":{"IDKECAMATANSATUSEHAT":"110507"}}]}
+Attempting Update: IDKECAMATANSATUSEHAT = 110507, IDKECAMATAN = 30631
+Query Succeeded: 1 rows affected.
+{"mapped_kelurahan":[{"selected_kelurahan":{"IDKELURAHAN":"8844"},"mapped_kemenkes_kelurahan":{"IDKELURAHANSATUSEHAT":"3216132001"}},{"selected_kelurahan":{"IDKELURAHAN":"8852"},"mapped_kemenkes_kelurahan":{"IDKELURAHANSATUSEHAT":"3216132009"}}]}
+Attempting Update: IDKELURAHANSATUSEHAT = 3216132001, IDKELURAHAN = 8844
+Query Succeeded: 1 rows affected.
+Attempting Update: IDKELURAHANSATUSEHAT = 3216132009, IDKELURAHAN = 8852
+Query Succeeded: 1 rows affected.
+{"mapped_kelurahan":[{"selected_kelurahan":{"IDKELURAHAN":"8849"},"mapped_kemenkes_kelurahan":{"IDKELURAHANSATUSEHAT":"3216132006"}},{"selected_kelurahan":{"IDKELURAHAN":"8851"},"mapped_kemenkes_kelurahan":{"IDKELURAHANSATUSEHAT":"3216132008"}}]}
+Attempting Update: IDKELURAHANSATUSEHAT = 3216132006, IDKELURAHAN = 8849
+Query Succeeded: 1 rows affected.
+Attempting Update: IDKELURAHANSATUSEHAT = 3216132008, IDKELURAHAN = 8851
+Query Succeeded: 1 rows affected.
+{"mapped_province":[{"selected_provinsi":{"PROVINSI":"Aceh","PROVINSIAKTIF":"Aktif","IDPROVINSISATUSEHAT":"null"},"mapped_kemenkes_provinsi":{"PROVINSI":"Aceh","IDPROVINSISATUSEHAT":"11"}}]}
+{"mapped_province":[{"selected_provinsi":{"PROVINSI":"Jawa Timur","PROVINSIAKTIF":"Aktif","IDPROVINSISATUSEHAT":"null"},"mapped_kemenkes_provinsi":{"PROVINSI":"Jawa Timur","IDPROVINSISATUSEHAT":"35"}}]}
